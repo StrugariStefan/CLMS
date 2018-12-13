@@ -1,1 +1,1 @@
-# CLMS
+# Courses/Labs Management System
