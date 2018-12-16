@@ -1,5 +1,12 @@
 # Courses/Labs Management System
 
+### User Management
+#### Endpoints
+- api/v1/users POST (registers a user)
+- api/v1/users/{id} GET, DELETE, PATCH/PUT
+- api/v1/groups/{id} GET (get all users from group ex: I3A5)
+- api/v1/groups GET
+
 ### Development workflow
 0. The first time you should clone the project locally. This step should be skipped in future iterations.
 1. Checkout to master and pull the latest version from github locally before adding any other code. **This should be done each time you want to make changes starting from the latest master changes:** 
