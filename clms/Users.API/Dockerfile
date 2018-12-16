@@ -3,21 +3,21 @@
 
 FROM microsoft/dotnet:2.1-aspnetcore-runtime-nanoserver-1803 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 62298
+EXPOSE 44386
 
 FROM microsoft/dotnet:2.1-sdk-nanoserver-1803 AS build
 WORKDIR /src
-COPY ["ContentManagementAPI/ContentManagementAPI.csproj", "ContentManagementAPI/"]
-RUN dotnet restore "ContentManagementAPI/ContentManagementAPI.csproj"
+COPY ["Users.API/Users.API.csproj", "Users.API/"]
+RUN dotnet restore "Users.API/Users.API.csproj"
 COPY . .
-WORKDIR "/src/ContentManagementAPI"
-RUN dotnet build "ContentManagementAPI.csproj" -c Release -o /app
+WORKDIR "/src/Users.API"
+RUN dotnet build "Users.API.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "ContentManagementAPI.csproj" -c Release -o /app
+RUN dotnet publish "Users.API.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "ContentManagementAPI.dll"]
+ENTRYPOINT ["dotnet", "Users.API.dll"]

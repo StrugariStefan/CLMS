@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:52421",
+      "applicationUrl": "http://localhost:62298",
       "sslPort": 44386
     }
   },
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "MarkingManagementAPI": {
+    "Users.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",
@@ -29,7 +29,7 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/values"
+      "launchUrl": "{Scheme}://{ServiceHost}/api/values"
     }
   }
 }
