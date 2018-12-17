@@ -1,11 +1,27 @@
 # Courses/Labs Management System
 
+# Prerequisites
+- Install Docker for your OS: https://www.docker.com/products/docker-desktop
+- Start Docker on your system
+- Test your installation: https://docs.docker.com/docker-for-windows/#test-your-installation
+- Read the following documentation in order to understand the development and runtime context:
+    - https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/docker-application-development-process/docker-app-development-workflow
+    - https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/multi-container-microservice-net-applications/data-driven-crud-microservice
+    
+# Project structure
+- 
+
+
+## Endpoints
 ### User Management
-#### Endpoints
 - api/v1/users POST (registers a user)
 - api/v1/users/{id} GET, DELETE, PATCH/PUT
 - api/v1/groups/{id} GET (get all users from group ex: I3A5)
 - api/v1/groups GET
+### Content Management
+- endpoint 1
+- endpoint 2
+### etc.
 
 ### Development workflow
 0. The first time you should clone the project locally. This step should be skipped in future iterations.
