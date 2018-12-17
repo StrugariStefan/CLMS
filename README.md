@@ -46,7 +46,8 @@ Notes:
 - Determine the name of the service that exposes the desired functionality from the docker-compose.yml file: https://github.com/StrugariStefan/CLMS/blob/master/clms/docker-compose.yml
 - Determine the service URL: http://<service-name>/api
 - Create an utility Class that contains the HttpClient creation logic and obtain a referance to use for generating HTTP requests    
-    ```
+
+```
     // GET api/values/5
     [HttpGet("{id}")]
     public async Task<ActionResult<string>> Get(int id)
@@ -69,8 +70,8 @@ Notes:
         handler.ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => { return true; };
         return handler;
     }
-
 ```
+
 ## Using databases
 
 Relational databases
