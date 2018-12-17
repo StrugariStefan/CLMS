@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Users.API
+namespace Notifications.API
 {
     public class Program
     {
@@ -12,7 +12,7 @@ namespace Users.API
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://localhost:5001")
+                .UseUrls("http://localhost:5002")
                 .UseStartup<Startup>();
     }
 }

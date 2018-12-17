@@ -10,15 +10,13 @@ namespace Users.API.Models
             Database.EnsureCreated();
         }
         
-        public DbSet<Product> Products { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<Product>().Property(p => p.Id).IsRequired();
-            modelBuilder.Entity<Product>().Property(p => p.Price).IsRequired();
-            modelBuilder.Entity<Product>().Property(p => p.Name).IsRequired().HasMaxLength(30);
-            modelBuilder.Entity<Product>().Property(p => p.Pieces).IsRequired();
+//
+//            modelBuilder.Entity<User>().Property(p => p.Id).IsRequired();
+            modelBuilder.Entity<User>().Property(p => p.Name).IsRequired().HasMaxLength(10);
         }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Users.API.Models;
-using Users.API.Repository;
 
-namespace Users.API
+namespace Notifications.API
 {
     public class Startup
     {
@@ -27,16 +24,12 @@ namespace Users.API
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
-                    Title = "clms - Users HTTP API",
+                    Title = "clms - Notifications HTTP API",
                     Version = "v1",
-                    Description = "The Users Microservice HTTP API. Test",
+                    Description = "The Notifications Microservice HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
             });
-
-//            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=products;Trusted_Connection=True;"));
-            services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
-            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -60,7 +53,6 @@ namespace Users.API
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });
-
             app.UseMvc();
         }
     }
