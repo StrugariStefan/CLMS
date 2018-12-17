@@ -3,8 +3,10 @@
 # Project structure
 - The **clms** folder will contain all the project code
 - Each microservice will have its coresponding folder/project of the form **clms/microservice-name**
-    - Users.API: http://locahost:5001/swagger/index.html
-    - Notifications.API: http://locahost:5002/swagger/index.html
+
+## Services
+- Users.API: http://locahost:5001/swagger/index.html
+- Notifications.API: http://locahost:5002/swagger/index.html
 
 # Running the project
 - Follow the instructions from if you are not able to start the project by default: https://www.youtube.com/watch?v=N6U_3Dxxkks
@@ -14,17 +16,6 @@ Notes:
 - Determining the IP adress of a specific service: **clms/microservice-name/Properties/launchSettings.json**
 - When adding a new project, make sure to follow the current convention of increasing port numbers: 5001, 5002, etc.    
 
-## Endpoints
-### User Management
-- http://host:port/swagger/index.html
-- api/v1/users POST (registers a user)
-- api/v1/users/{id} GET, DELETE, PATCH/PUT
-- api/v1/groups/{id} GET (get all users from group ex: I3A5)
-- api/v1/groups GET
-### Content Management
-- endpoint 1
-- endpoint 2
-### etc.
 
 ## Calling a service from another container
 - Determine the service URL
