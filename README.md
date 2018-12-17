@@ -23,6 +23,11 @@
 
 Notes:
 - In both cases you might need to see the logs to determine the appropriate IP and/or port at which the services are exposed
+- Determining the IP adress of a specific container:
+    - docker network inspect <network-name>: this will list the IP addressed for each container
+    - docker ps: lists info about the running containers, including the container id
+    - docker inspect <container-id>: this will provide container information, including the IP address -- towards the end
+- After you manage to determine the IP address, you can use it to access the service and interact with it, most probably through Swagger: http:ip-address/swagger/index.html    
 
 ## Endpoints
 ### User Management
