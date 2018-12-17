@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Users.API.Controllers
+namespace Notifications.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -15,15 +14,14 @@ namespace Users.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1 users", "value2" };
+            return new string[] { "value1 notifications", "value2" };
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<string>> Get(int id)
+        public ActionResult<string> Get(int id)
         {
-            HttpClient client = new HttpClient();
-            return await client.GetStringAsync("http://localhost:5002/api/values/4");
+            return "value din notifications.api";
         }
 
         // POST api/values
