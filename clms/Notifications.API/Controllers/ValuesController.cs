@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Users.API.Controllers
+namespace Notifications.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,7 +14,7 @@ namespace Users.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1 users", "value2" };
+            return new string[] { "value1 notifications", "value2" };
         }
 
         // GET api/values/5
