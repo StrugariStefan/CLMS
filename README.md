@@ -17,7 +17,7 @@
 
 # Running the project
 ## CLI
-- When the **docker-compose.yml** file is run using **docker-compose up** command from the location where it is located, Docker will start each image name specified in this file and the service will eventually become up and running
+- When the **docker-compose.yml** file is run using **docker-compose up --build** command from the location where it is located, Docker will start each image name specified in this file and the service will eventually become up and running; the --build option forces the container to be built again from the sources and incorporate new changes
 ## IDE
 - Follow the instructions from: https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/docker-application-development-process/docker-app-development-workflow 
 
