@@ -36,6 +36,18 @@ Notes:
 - endpoint 2
 ### etc.
 
+## Using databases
+
+Relational databases
+- Use the Database as a Service provided by FII
+- Login in your account at FII: https://students.info.uaic.ro/db/
+- Create a DB for the service you are developing
+- Use the credentials specified in the UI in order to connect to the newly created DB: https://github.com/StrugariStefan/CLMS/blob/master/clms/Users.API/Startup.cs#L38
+
+NoSQL databases
+- Determine if there is available a free service somehwere that exposes an API to use a NoSQL DB (e.g., MongoDB, etc.); to use the NoSQL DB just as we are using the MySQL DB from the faculty
+- ??? To investigate if a container can be used
+
 ### Development workflow
 0. The first time you should clone the project locally. This step should be skipped in future iterations.
 1. Checkout to master and pull the latest version from github locally before adding any other code. **This should be done each time you want to make changes starting from the latest master changes:** 
