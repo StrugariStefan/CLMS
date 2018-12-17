@@ -3,6 +3,8 @@
 # Project structure
 - The **clms** folder will contain all the project code
 - Each microservice will have its coresponding folder/project of the form **clms/microservice-name**
+    - Users.API: http://locahost:5001/swagger/index.html
+    - Notifications.API: http://locahost:5002/swagger/index.html
 
 # Running the project
 - Follow the instructions from if you are not able to start the project by default: https://www.youtube.com/watch?v=N6U_3Dxxkks
@@ -41,7 +43,7 @@ Relational databases
 - Use the Database as a Service provided by FII
 - Login in your account at FII: https://students.info.uaic.ro/db/
 - Create a DB for the service you are developing
-- Use the credentials specified in the UI in order to connect to the newly created DB: https://github.com/StrugariStefan/CLMS/blob/master/clms/Users.API/Startup.cs#L38
+- Use the credentials specified in the UI in order to connect to the newly created DB: https://github.com/StrugariStefan/CLMS/blob/master/clms/Users.API/Startup.cs
 
 NoSQL databases
 - Determine if there is available a free service somehwere that exposes an API to use a NoSQL DB (e.g., MongoDB, etc.); to use the NoSQL DB just as we are using the MySQL DB from the faculty
