@@ -6,3 +6,10 @@ services:
     build:
       context: .
       dockerfile: Users.API\Dockerfile
+
+  notifications.api:
+    image: ${DOCKER_REGISTRY}notificationsapi
+    build:
+      context: .
+      dockerfile: Notifications.API\Dockerfile
+

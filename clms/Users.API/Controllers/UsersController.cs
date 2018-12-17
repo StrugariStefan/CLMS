@@ -6,36 +6,37 @@ using Users.API.Repository;
 
 namespace Users.API.Controllers
 {
-    [Route("api/products")]
+    [Route("api/users")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly IProductRepository _repository;
+        private readonly IUserRepository _repository;
 
-        public ProductsController(IProductRepository repository)
+        public UsersController(IUserRepository repository)
         {
             _repository = repository;
         }
 
-        [HttpGet("{id}", Name = "GetByProductId")]
-        public ActionResult<Product> GetById(Guid id)
+        [HttpGet("{id}", Name = "GetByUserId")]
+        public ActionResult<User> GetById(Guid id)
         {
             if (_repository.Exists(id) == false)
             {
                 return NotFound();
             }
 
+
             return Ok(_repository.GetById(id));
         }
 
         [HttpGet]
-        public ActionResult<IReadOnlyList<Product>> Get()
+        public ActionResult<IReadOnlyList<User>> Get()
         {
             return Ok(_repository.GetAll());
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<Product> Delete(Guid id)
+        public ActionResult<User> Delete(Guid id)
         {
             if (_repository.Exists(id) == false)
             {
@@ -50,18 +51,18 @@ namespace Users.API.Controllers
 
 
         [HttpPost]
-        public ActionResult<Product> Create([FromBody] ProductDto productDto)
+        public ActionResult<User> Create([FromBody] UserDto userDto)
         {
-            if (productDto == null)
+            if (userDto == null)
             {
                 return BadRequest();
             }
 
-            Product product = new Product(productDto.Name, productDto.Price, productDto.Pieces);
-            _repository.Create(product);
+            User user = new User(userDto.Name);
+            _repository.Create(user);
             _repository.SaveChanges();
 
-            return CreatedAtRoute("GetByProductId", new { id = product.Id }, product);
+            return CreatedAtRoute("GetByUserId", new { id = user.Id }, user);
         }
     }
 }
