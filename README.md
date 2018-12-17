@@ -1,34 +1,16 @@
 # Courses/Labs Management System
 
-# Prerequisites
-- Install Docker for your OS: https://www.docker.com/products/docker-desktop
-- Start Docker on your system
-- Test your installation: https://docs.docker.com/docker-for-windows/#test-your-installation
-- Read the following documentation in order to understand the development and runtime context:
-    - https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/docker-application-development-process/docker-app-development-workflow
-    - https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/multi-container-microservice-net-applications/data-driven-crud-microservice
-    
 # Project structure
-- The **clms** folder will contain all project code
-    - The **docker-compose.yml** file contains the services that compose the project
-    - Otherwise said: the containers that make up the Labs Management System project
+- The **clms** folder will contain all the project code
 - Each microservice will have its coresponding folder/project of the form **clms/microservice-name**
-    - Each microservice/project will contain a Dockerfile (that should be generated automatically) that describes the images that will be created for that service/microservice
 
 # Running the project
-## CLI
-- When the **docker-compose.yml** file is run using **docker-compose up --build** command from the location where it is located, Docker will start each image name specified in this file and the service will eventually become up and running; the --build option forces the container to be built again from the sources and incorporate new changes
-## IDE
-- Follow the instructions from: https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/docker-application-development-process/docker-app-development-workflow 
-
+- Follow the instructions from if you are not able to start the project by default: https://www.youtube.com/watch?v=N6U_3Dxxkks
 Notes:
-- In both cases you might need to see the logs to determine the appropriate IP and/or port at which the services are exposed
-- Determining the IP adress of a specific container:
-    - docker network inspect <network-name>: this will list the IP addressed for each container
-    - docker ps: lists info about the running containers, including the container id
-    - docker inspect <container-id>: this will provide container information, including the IP address -- towards the end
-- After you manage to determine the IP address, you can use it to access the service and interact with it, most probably through Swagger: http://<ip-address>/swagger/index.html
-    
+- Each service will be exposed at **http://localhost:500x/**
+- You can access Swagger at: **http://localhost:500x/swagger/index.html**
+- Determining the IP adress of a specific service: **clms/microservice-name/Properties/launchSettings.json**
+- When adding a new project, make sure to follow the current convention of increasing port numbers: 5001, 5002, etc.    
 
 ## Endpoints
 ### User Management
@@ -43,15 +25,13 @@ Notes:
 ### etc.
 
 ## Calling a service from another container
-- Determine the name of the service that exposes the desired functionality from the docker-compose.yml file: https://github.com/StrugariStefan/CLMS/blob/master/clms/docker-compose.yml
-- Determine the service URL: http://<service-name>/api
-- Create an utility Class that contains the HttpClient creation logic and obtain a referance to use for generating HTTP requests    
-
+- Determine the service URL
+- Use the following code logic in order make HTTP calls
 ```
     public async Task<ActionResult<string>> doSomeWork()
     {
         HttpClient client = new HttpClient();
-        return await client.GetStringAsync("http://localhost:5002/api/values/4");
+        return await client.GetStringAsync("http://localhost:<desired-service-port>/api/values/4");
     }
 ```
 
