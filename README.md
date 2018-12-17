@@ -9,11 +9,24 @@
     - https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/multi-container-microservice-net-applications/data-driven-crud-microservice
     
 # Project structure
-- 
+- The **clms** folder will contain all project code
+    - The **docker-compose.yml** file contains the services that compose the project
+    - Otherwise said: the containers that make up the Labs Management System project
+- Each microservice will have its coresponding folder/project of the form **clms/microservice-name**
+    - Each microservice/project will contain a Dockerfile (that should be generated automatically) that describes the images that will be created for that service/microservice
 
+# Running the project
+## CLI
+- When the **docker-compose.yml** file is run using **docker-compose up** command from the location where it is located, Docker will start each image name specified in this file and the service will eventually become up and running
+## IDE
+- Follow the instructions from: https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/docker-application-development-process/docker-app-development-workflow 
+
+Notes:
+- In both cases you might need to see the logs to determine the appropriate IP and/or port at which the services are exposed
 
 ## Endpoints
 ### User Management
+- http://host:port/swagger/index.html
 - api/v1/users POST (registers a user)
 - api/v1/users/{id} GET, DELETE, PATCH/PUT
 - api/v1/groups/{id} GET (get all users from group ex: I3A5)
