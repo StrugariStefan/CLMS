@@ -42,6 +42,35 @@ Notes:
 - endpoint 2
 ### etc.
 
+## Calling a service from another container
+- Determine the name of the service that exposes the desired functionality from the docker-compose.yml file: https://github.com/StrugariStefan/CLMS/blob/master/clms/docker-compose.yml
+- Determine the service URL: http://<service-name>/api
+- Create an utility Class that contains the HttpClient creation logic and obtain a referance to use for generating HTTP requests    
+    ```
+    // GET api/values/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<string>> Get(int id)
+    {
+        var client = GetHttpClient();
+        return await client.GetStringAsync("http://users.api/api/values/5");
+    }
+
+    private static HttpClient GetHttpClient()
+    {
+        var handler = GetHttpClientHandler();
+        HttpClient client = new HttpClient(handler);
+        return client;
+    }
+
+    private static HttpClientHandler GetHttpClientHandler()
+    {
+        var handler = new HttpClientHandler();
+        handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+        handler.ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => { return true; };
+        return handler;
+    }
+
+```
 ## Using databases
 
 Relational databases
