@@ -34,8 +34,8 @@ namespace Notifications.API.Controllers
         private static HttpClientHandler GetHttpClientHandler()
         {
             var handler = new HttpClientHandler();
-            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-            handler.ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => { return true; };
+//            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+//            handler.ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => { return true; };
             return handler;
         }
 
