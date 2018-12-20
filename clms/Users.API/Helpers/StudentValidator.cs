@@ -5,7 +5,7 @@ using Users.API.Models;
 
 namespace Users.API.Helpers
 {
-    public class StudentValidator : AbstractValidator<Student>
+    public class StudentValidator : AbstractValidator<StudentDto>
     {
         public StudentValidator()
         {
