@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Users.API.Helpers;
 using Users.API.Models;
@@ -11,7 +8,7 @@ using Users.API.Repository.Write;
 
 namespace Users.API.Controllers
 {
-    [Route("api/users")]
+    [Route("api/v1/users")]
     [ApiController]
     public class UsersController : ControllerBase
     { 
@@ -70,6 +67,14 @@ namespace Users.API.Controllers
             }
 
             User user = _createMapper.DtoToEntity(userCreateDto);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            User user = _mapper.DtoToEntity(userDto);
+
             _writeRepository.Create(user);
             _writeRepository.SaveChanges();
 

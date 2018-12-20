@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -9,8 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Users.API.Context;
 using Users.API.Helpers;
 using Users.API.Models;
@@ -37,21 +34,25 @@ namespace Users.API
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
-                    Title = "clms - Users HTTP API",
+                    Title = "Users HTTP API",
                     Version = "v1",
                     Description = "The Users Microservice HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
             });
-
+          
             services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
             services.AddTransient<IReadUserRepository, ReadUserRepository>();
             services.AddTransient<IWriteUserRepository, WriteUserRepository>();
             services.AddTransient<IMapper<User, UserDto>, Mapper<User, UserDto>>();
             services.AddTransient<IMapper<User, UserCreateDto>, Mapper<User, UserCreateDto>>();
+            services.AddTransient<IValidator<UserDto>, UserDtoValidator>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services
+                .AddMvc()
+                .AddFluentValidation(fvc =>
+                    fvc.RegisterValidatorsFromAssemblyContaining<Startup>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,10 +64,7 @@ namespace Users.API
             }
 
             app.UseSwagger()
-                .UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users.API");
-                });
+                .UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users.API"); });
 
             app.UseMvc();
         }
