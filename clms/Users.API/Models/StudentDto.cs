@@ -11,5 +11,6 @@ namespace Users.API.Models
         //public IEnumerable<int> Grades { get; set; }
         public int Year { get; set; }
         public string StudyProgram { get; set; }
+        public string Group { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace Users.API.Helpers
             RuleFor(user => user.Phone).NotNull().Matches("\\d{10}");
             RuleFor(user => user.Email).NotNull().Matches("[a-zA-Z0-9_.-]+@[a-z]+.[a-z]+");
             RuleFor(user => user.Password).NotNull().Matches("^.{6,}$");
+            RuleFor(user => user.Role).NotNull().InclusiveBetween(1, 2);
         }
     }
 }

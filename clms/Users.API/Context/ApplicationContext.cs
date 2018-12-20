@@ -17,9 +17,12 @@ namespace Users.API.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().Property(p => p.Id).IsRequired();
+            modelBuilder.Entity<User>().HasIndex(p => p.Id).IsUnique();
             modelBuilder.Entity<User>().Property(p => p.Name).IsRequired();
             modelBuilder.Entity<User>().Property(p => p.Email).IsRequired();
+            modelBuilder.Entity<User>().HasIndex(p => p.Email).IsUnique();
             modelBuilder.Entity<User>().Property(p => p.Password).IsRequired();
+            modelBuilder.Entity<User>().Property(p => p.Role).IsRequired();
             modelBuilder.Entity<Student>().HasBaseType<User>();
             modelBuilder.Entity<Teacher>().HasBaseType<User>();
         }

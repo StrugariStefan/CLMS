@@ -17,7 +17,7 @@ namespace Users.API.Repository.Read
 
         public User GetById(Guid id)
         {
-            return _context.Users.First(p => p.Id == id);
+            return _context.Users.FirstOrDefault(p => p.Id == id);
         }
 
         public IReadOnlyList<User> GetAll()
@@ -28,6 +28,11 @@ namespace Users.API.Repository.Read
         public bool Exists(Guid id)
         {
             return _context.Users.Any(p => p.Id == id);
+        }
+
+        public User GetByEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(u => u.Email == email);
         }
 
         public void SaveChanges()

@@ -2,7 +2,7 @@
 {
     public class Student : User
     {
-        public Student(string name, string email, string phone, string password, int year, string group, string studyProgram) : base(name, email, phone, password)
+        public Student(string name, string email, string phone, string password, int role, int year, string group, string studyProgram) : base(name, email, phone, password, role)
         {
             Year = year;
             Group = group;

@@ -30,10 +30,11 @@ namespace Users.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //  mongodb://clms:clmsnet3@ds151012.mlab.com:51012/clms
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=clms;Trusted_Connection=True;"));
-            //            services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
+            // services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
 
-            services.AddTransient<IReadRepository<User>, ReadUserRepository>();
+            services.AddTransient<ReadUserRepository, ReadUserRepository>();
             services.AddTransient<IReadRepository<Student>, ReadStudentRepository>();
             services.AddTransient<IReadRepository<Teacher>, ReadTeacherRepository>();
 

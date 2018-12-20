@@ -14,13 +14,13 @@ namespace Users.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     { 
-        private readonly IReadRepository<User> _readRepository;
+        private readonly ReadUserRepository _readRepository;
         private readonly IWriteRepository<User> _writeRepository;
         private readonly IMapper<User, UserDto> _mapper;
         private readonly IMapper<User, UserCreateDto> _createMapper;
 
 
-        public UsersController(IReadRepository<User> readRepository, IWriteRepository<User> writeRepository, IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
+        public UsersController(ReadUserRepository readRepository, IWriteRepository<User> writeRepository, IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
@@ -70,7 +70,7 @@ namespace Users.API.Controllers
         }
 
         /// <summary>
-        /// Registers an user.
+        /// Registers an user. Roles: 1 = student, 2 = teacher.
         /// </summary>  
         [HttpPost]
         public ActionResult<User> Create([FromBody] UserCreateDto userCreateDto)
@@ -80,16 +80,22 @@ namespace Users.API.Controllers
                 return BadRequest();
             }
 
-            Mapper.Initialize(cfg => {
-                cfg.CreateMap<UserCreateDto, User>().ConvertUsing(s => new User(s.Name, s.Email, s.Phone, s.Password));
-            });
-
-            User user = Mapper.Map<UserCreateDto, User>(userCreateDto);
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+                 
+            if (_readRepository.GetByEmail(userCreateDto.Email) != null)
+            {
+                return BadRequest("The e-mail address is already used.");
+            }
+
+            MapperConfiguration config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UserCreateDto, User>().ConvertUsing(s => new User(s.Name, s.Email, s.Phone, s.Password, s.Role));
+            });
+
+            User user = config.CreateMapper().Map<User>(userCreateDto);
 
             _writeRepository.Create(user);
             _writeRepository.SaveChanges();
