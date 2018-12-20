@@ -25,12 +25,18 @@ namespace Users.API.Controllers
             _createMapper = createMapper;
         }
 
+        /// <summary>
+        /// Returns all students.
+        /// </summary> 
         [HttpGet]
         public ActionResult<IReadOnlyList<StudentDto>> Get()
         {
             return Ok(_mapper.EntityCollectionToDtoCollection(_readRepository.GetAll()));
         }
 
+        /// <summary>
+        /// Returns all students belonging to a group.
+        /// </summary> 
         [HttpGet("/group/{group}", Name = "GetByGroup")]
         public ActionResult<UserDto> GetByGroup(string group)
         {
@@ -38,6 +44,9 @@ namespace Users.API.Controllers
             return null;
         }
 
+        /// <summary>
+        /// Returns all students belonging to a year.
+        /// </summary> 
         [HttpGet("/year/{year}", Name = "GetByYear")]
         public ActionResult<UserDto> GetByYear(int year)
         {

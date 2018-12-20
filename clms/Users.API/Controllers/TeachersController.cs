@@ -29,6 +29,9 @@ namespace Users.API.Controllers
             _createMapper = createMapper;
         }
 
+        /// <summary>
+        /// Returns all teachers.
+        /// </summary> 
         [HttpGet]
         public ActionResult<IReadOnlyList<TeacherDto>> Get()
         {
