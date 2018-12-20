@@ -44,6 +44,15 @@ namespace Users.API.Controllers
         }
 
         /// <summary>
+        /// Obtains all users by role.
+        /// </summary>
+        [HttpGet("/role/{role}", Name = "GetByRole")]
+        public ActionResult<IReadOnlyList<UserDto>> GetByRole(int role)
+        {
+            return Ok(_mapper.EntityCollectionToDtoCollection(_readRepository.GetByRole(role)));
+        }
+
+        /// <summary>
         /// Returns all users.
         /// </summary>  
         [HttpGet]

@@ -39,5 +39,10 @@ namespace Users.API.Repository.Read
         {
             _context.SaveChanges();
         }
+
+        public IReadOnlyList<User> GetByRole(int role)
+        {
+            return _context.Users.Where(u => u.Role == role).ToList();
+        }
     }
 }
