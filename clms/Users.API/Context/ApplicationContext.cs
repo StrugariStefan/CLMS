@@ -20,6 +20,8 @@ namespace Users.API.Context
         {
             modelBuilder.Entity<User>().Property(p => p.Id).IsRequired();
             modelBuilder.Entity<User>().Property(p => p.Name).IsRequired().HasMaxLength(10);
+            modelBuilder.Entity<Student>().HasBaseType<User>();
+            modelBuilder.Entity<Teacher>().HasBaseType<User>();
         }
     }
 }

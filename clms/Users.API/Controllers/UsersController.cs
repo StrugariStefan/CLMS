@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Users.API.Helpers;
 using Users.API.Models;
 using Users.API.Repository.Read;
 using Users.API.Repository.Write;
@@ -16,30 +17,31 @@ namespace Users.API.Controllers
     { 
         private readonly IReadUserRepository _readRepository;
         private readonly IWriteUserRepository _writeRepository;
+        private readonly IMapper<User, UserDto> _mapper;
 
 
-        public UsersController(IReadUserRepository readRepository, IWriteUserRepository writeRepository)
+        public UsersController(IReadUserRepository readRepository, IWriteUserRepository writeRepository, IMapper<User, UserDto> mapper)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}", Name = "GetByUserId")]
-        public ActionResult<User> GetById(Guid id)
+        public ActionResult<UserDto> GetById(Guid id)
         {
             if (_readRepository.Exists(id) == false)
             {
                 return NotFound();
             }
 
-
-            return Ok(_readRepository.GetById(id));
+            return Ok(_mapper.EntityToDto(_readRepository.GetById(id)));
         }
 
         [HttpGet]
-        public ActionResult<IReadOnlyList<User>> Get()
+        public ActionResult<IReadOnlyList<UserDto>> Get()
         {
-            return Ok(_readRepository.GetAll());
+            return Ok(_mapper.EntityCollectionToDtoCollection(_readRepository.GetAll()));
         }
 
         [HttpDelete("{id}")]
@@ -65,7 +67,7 @@ namespace Users.API.Controllers
                 return BadRequest();
             }
 
-            User user = new User(userDto.Name);
+            User user = _mapper.DtoToEntity(userDto);
             _writeRepository.Create(user);
             _writeRepository.SaveChanges();
 
