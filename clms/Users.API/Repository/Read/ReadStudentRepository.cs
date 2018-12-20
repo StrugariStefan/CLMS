@@ -34,5 +34,13 @@ namespace Users.API.Repository.Read
         {
             _context.SaveChanges();
         }
+        public IReadOnlyList<Student> getByYear(int year)
+        {
+            return _context.Students.Where(p => p.Year == year).ToList<Student>();
+        }
+        public IReadOnlyList<Student> getByGroup(String group)
+        {
+            return _context.Students.Where(p => p.Group == group).ToList<Student>();
+        }
     }
 }
