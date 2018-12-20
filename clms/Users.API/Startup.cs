@@ -38,8 +38,10 @@ namespace Users.API
                     TermsOfService = "Terms Of Service"
                 });
             });
-          
-            services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
+
+
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=clms;Trusted_Connection=True;"));
+//            services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
             services.AddTransient<IReadUserRepository, ReadUserRepository>();
             services.AddTransient<IWriteUserRepository, WriteUserRepository>();
             services.AddTransient<IMapper<User, UserDto>, Mapper<User, UserDto>>();
