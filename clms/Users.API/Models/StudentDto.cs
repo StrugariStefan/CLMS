@@ -10,6 +10,6 @@ namespace Users.API.Models
         //public IEnumerable<String> EnrolledClasses { get; set; }
         //public IEnumerable<int> Grades { get; set; }
         public int Year { get; set; }
-        public string StudyProgramme { get; set; }
+        public string StudyProgram { get; set; }
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,7 +44,8 @@ namespace Users.API
             services.AddTransient<IWriteUserRepository, WriteUserRepository>();
             services.AddTransient<IMapper<User, UserDto>, Mapper<User, UserDto>>();
             services.AddTransient<IMapper<User, UserCreateDto>, Mapper<User, UserCreateDto>>();
-            services.AddTransient<IValidator<UserDto>, UserDtoValidator>();
+            services.AddTransient<IValidator<User>, UserValidator>();
+            services.AddTransient<IValidator<Student>, StudentValidator>();
 
             services
                 .AddMvc()
