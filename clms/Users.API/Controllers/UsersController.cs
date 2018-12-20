@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Users.API.Helpers;
@@ -9,18 +10,18 @@ using Users.API.Repository.Write;
 
 namespace Users.API.Controllers
 {
-
     [Route("api/v1/users")]
     [ApiController]
     public class UsersController : ControllerBase
-    { 
+    {
         private readonly ReadUserRepository _readRepository;
         private readonly IWriteRepository<User> _writeRepository;
         private readonly IMapper<User, UserDto> _mapper;
         private readonly IMapper<User, UserCreateDto> _createMapper;
 
 
-        public UsersController(ReadUserRepository readRepository, IWriteRepository<User> writeRepository, IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
+        public UsersController(ReadUserRepository readRepository, IWriteRepository<User> writeRepository,
+            IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
@@ -93,15 +94,16 @@ namespace Users.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-                 
+
             if (_readRepository.GetByEmail(userCreateDto.Email) != null)
             {
                 return BadRequest("The e-mail address is already used.");
             }
 
+
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<UserCreateDto, User>().ConvertUsing(s => new User(s.Name, s.Email, s.Phone, s.Password, s.Role));
+                cfg.CreateMap<UserCreateDto, User>().ConvertUsing(s => new User(s.Name, s.Email, s.Phone, Hash(s.Password), s.Role));
             });
 
             User user = config.CreateMapper().Map<User>(userCreateDto);
@@ -109,7 +111,15 @@ namespace Users.API.Controllers
             _writeRepository.Create(user);
             _writeRepository.SaveChanges();
 
-            return CreatedAtRoute("GetByUserId", new { id = user.Id }, user);
+            return CreatedAtRoute("GetByUserId", new {id = user.Id}, user);
+        }
+
+        private string Hash(string password)
+        {
+            byte[] hash = SHA256.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            string hashedPassword = System.Text.Encoding.UTF8.GetString(hash);
+
+            return hashedPassword;
         }
     }
 }
