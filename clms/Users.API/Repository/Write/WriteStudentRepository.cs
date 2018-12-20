@@ -1,28 +1,39 @@
 ﻿using System;
+using System.Linq;
+using Users.API.Context;
 using Users.API.Models;
+
 
 namespace Users.API.Repository.Write
 {
     public class WriteStudentRepository : IWriteRepository<Student>
     {
-        public void Create(Student user)
+        private readonly ApplicationContext _context;
+
+        public WriteStudentRepository(ApplicationContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public void Create(Student student)
+        {
+            _context.Students.Add(student);
         }
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            Student student = _context.Students.First(p => p.Id == id);
+            _context.Students.Remove(student);
         }
 
         public bool Exists(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Students.Any(p => p.Id == id);
         }
 
         public void SaveChanges()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
     }
 }
