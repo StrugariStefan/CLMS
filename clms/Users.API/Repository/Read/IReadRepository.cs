@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Users.API.Models;
 
 namespace Users.API.Repository.Read
 {
-    public interface IReadUserRepository
+    public interface IReadRepository<T>
     {
-        User GetById(Guid id);
-        IReadOnlyList<User> GetAll();
+        T GetById(Guid id);
+        IReadOnlyList<T> GetAll();
         bool Exists(Guid id);
         void SaveChanges();
     }

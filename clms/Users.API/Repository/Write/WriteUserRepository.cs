@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Users.API.Context;
 using Users.API.Models;
 
 namespace Users.API.Repository.Write
 {
-    public class WriteUserRepository : IWriteUserRepository
+    public class WriteUserRepository : IWriteRepository<User>
     {
         private readonly ApplicationContext _context;
 

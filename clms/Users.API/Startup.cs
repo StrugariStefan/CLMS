@@ -41,11 +41,19 @@ namespace Users.API
 
 
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=clms;Trusted_Connection=True;"));
-//            services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
-            services.AddTransient<IReadUserRepository, ReadUserRepository>();
-            services.AddTransient<IWriteUserRepository, WriteUserRepository>();
+            //            services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
+
+            services.AddTransient<IReadRepository<User>, ReadUserRepository>();
+            services.AddTransient<IReadRepository<Student>, ReadStudentRepository>();
+            services.AddTransient<IReadRepository<Teacher>, ReadTeacherRepository>();
+
+            services.AddTransient<IWriteRepository<User>, WriteUserRepository>();
+//            services.AddTransient<IWriteRepository<Student>, WriteStudentRepository>();
+            services.AddTransient<IWriteRepository<Teacher>, WriteTeacherRepository>();
+
             services.AddTransient<IMapper<User, UserDto>, Mapper<User, UserDto>>();
             services.AddTransient<IMapper<User, UserCreateDto>, Mapper<User, UserCreateDto>>();
+
             services.AddTransient<IValidator<User>, UserValidator>();
             services.AddTransient<IValidator<Student>, StudentValidator>();
 

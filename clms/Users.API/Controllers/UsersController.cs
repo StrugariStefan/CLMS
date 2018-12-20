@@ -12,13 +12,13 @@ namespace Users.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     { 
-        private readonly IReadUserRepository _readRepository;
-        private readonly IWriteUserRepository _writeRepository;
+        private readonly IReadRepository<User> _readRepository;
+        private readonly IWriteRepository<User> _writeRepository;
         private readonly IMapper<User, UserDto> _mapper;
         private readonly IMapper<User, UserCreateDto> _createMapper;
 
 
-        public UsersController(IReadUserRepository readRepository, IWriteUserRepository writeRepository, IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
+        public UsersController(IReadRepository<User> readRepository, IWriteRepository<User> writeRepository, IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
