@@ -41,11 +41,11 @@ namespace Users.API
 //            services.AddTransient<IWriteRepository<Student>, WriteStudentRepository>();
             services.AddTransient<IWriteRepository<Teacher>, WriteTeacherRepository>();
 
-            services.AddTransient<IMapper<User, UserDto>, Mapper2<User, UserDto>>();
-            services.AddTransient<IMapper<User, UserCreateDto>, Mapper2<User, UserCreateDto>>();
+            services.AddTransient<IMapper<User, UserDto>, Mapper<User, UserDto>>();
+            services.AddTransient<IMapper<User, UserCreateDto>, Mapper<User, UserCreateDto>>();
 
-            services.AddTransient<IValidator<User>, UserValidator>();
-            services.AddTransient<IValidator<Student>, StudentValidator>();
+            services.AddTransient<IValidator<UserCreateDto>, UserValidator>();
+            services.AddTransient<IValidator<StudentDto >, StudentValidator>();
 
             // Add framework services.
             services.AddSwaggerGen(options =>
