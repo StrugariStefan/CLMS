@@ -10,6 +10,11 @@ namespace Users.API.Repository.Read
     {
         private readonly ApplicationContext _context;
 
+        public ReadStudentRepository(ApplicationContext context)
+        {
+            _context = context;
+        }
+
         public Student GetById(Guid id)
         {        
             return _context.Students.First(p => p.Id == id);
