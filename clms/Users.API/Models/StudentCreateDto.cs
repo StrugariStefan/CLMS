@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Users.API.Models
 {
-    public class StudentDto : UserDto
+    public class StudentCreateDto:UserCreateDto
     {
         //public IEnumerable<String> EnrolledClasses { get; set; }
         //public IEnumerable<int> Grades { get; set; }

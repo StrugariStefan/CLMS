@@ -11,13 +11,12 @@ namespace Users.API.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private readonly IReadRepository<Student> _readRepository;
+        private readonly ReadStudentRepository _readRepository;
         private readonly IWriteRepository<Student> _writeRepository;
-        //todo (mapper pt student si student dto, stergeti cele curente de aici cu useri, inclusiv in constructor)
-        private readonly IMapper<User, UserDto> _mapper;
-        private readonly IMapper<User, UserCreateDto> _createMapper;
+        private readonly IMapper<Student, StudentDto> _mapper;
+        private readonly IMapper<Student, StudentCreateDto> _createMapper;
 
-        public StudentsController(IReadRepository<Student> readRepository, IWriteRepository<Student> writeRepository, IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
+        public StudentsController(ReadStudentRepository readRepository, IWriteRepository<Student> writeRepository, IMapper<Student, StudentDto> mapper, IMapper<Student, StudentCreateDto> createMapper)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
@@ -38,20 +37,19 @@ namespace Users.API.Controllers
         /// Returns all students belonging to a group.
         /// </summary> 
         [HttpGet("/group/{group}", Name = "GetByGroup")]
-        public ActionResult<UserDto> GetByGroup(string group)
+        public ActionResult<IReadOnlyList<StudentDto>> GetByGroup(string group)
         {
-            //TODO IMPLEMENT:ntoarceti totii studentii din grupa specificata ca paramateru
-            return null;
+            return Ok(_mapper.EntityCollectionToDtoCollection(_readRepository.GetByGroup(group)));
+
         }
 
         /// <summary>
         /// Returns all students belonging to a year.
         /// </summary> 
         [HttpGet("/year/{year}", Name = "GetByYear")]
-        public ActionResult<UserDto> GetByYear(int year)
+        public ActionResult<IReadOnlyList<StudentDto>> GetByYear(int year)
         {
-            //TODO IMPLEMENT: intoarceti totii studentii din anul specificat ca paramateru
-            return null;
+            return Ok(_mapper.EntityCollectionToDtoCollection(_readRepository.GetByYear(year)));
         }
 
 
