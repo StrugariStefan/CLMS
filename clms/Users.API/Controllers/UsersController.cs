@@ -18,13 +18,15 @@ namespace Users.API.Controllers
         private readonly IReadUserRepository _readRepository;
         private readonly IWriteUserRepository _writeRepository;
         private readonly IMapper<User, UserDto> _mapper;
+        private readonly IMapper<User, UserCreateDto> _createMapper;
 
 
-        public UsersController(IReadUserRepository readRepository, IWriteUserRepository writeRepository, IMapper<User, UserDto> mapper)
+        public UsersController(IReadUserRepository readRepository, IWriteUserRepository writeRepository, IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
             _mapper = mapper;
+            _createMapper = createMapper;
         }
 
         [HttpGet("{id}", Name = "GetByUserId")]
@@ -60,14 +62,14 @@ namespace Users.API.Controllers
 
 
         [HttpPost]
-        public ActionResult<User> Create([FromBody] UserDto userDto)
+        public ActionResult<User> Create([FromBody] UserCreateDto userCreateDto)
         {
-            if (userDto == null)
+            if (userCreateDto == null)
             {
                 return BadRequest();
             }
 
-            User user = _mapper.DtoToEntity(userDto);
+            User user = _createMapper.DtoToEntity(userCreateDto);
             _writeRepository.Create(user);
             _writeRepository.SaveChanges();
 
