@@ -88,7 +88,7 @@ namespace Users.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             User user = _createMapper.DtoToEntity(userCreateDto);
 
             _writeRepository.Create(user);

@@ -1,9 +1,7 @@
-﻿using System;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -40,15 +38,18 @@ namespace Users.API
                     TermsOfService = "Terms Of Service"
                 });
             });
-          
-            services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
+
+
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=clms;Trusted_Connection=True;"));
+//            services.AddDbContext<ApplicationContext>(options => options.UseMySql(@"server=fenrir.info.uaic.ro;uid=clmsusers;pwd=QEtCDIZR6t;database=clmsusers"));
             services.AddTransient<IReadUserRepository, ReadUserRepository>();
             services.AddTransient<IWriteUserRepository, WriteUserRepository>();
             services.AddTransient<IMapper<User, UserDto>, Mapper<User, UserDto>>();
             services.AddTransient<IMapper<User, UserCreateDto>, Mapper<User, UserCreateDto>>();
+            services.AddTransient<IValidator<User>, UserValidator>();
+            services.AddTransient<IValidator<Student>, StudentValidator>();
             services.AddTransient<IMapper<Student, StudentDto>, Mapper<Student, StudentDto>>();
             services.AddTransient<IMapper<Teacher, TeacherDto>, Mapper<Teacher, TeacherDto>>();
-            services.AddTransient<IValidator<UserDto>, UserDtoValidator>();
 
             services
                 .AddMvc()
