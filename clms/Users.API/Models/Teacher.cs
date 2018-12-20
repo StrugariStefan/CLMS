@@ -7,8 +7,11 @@ namespace Users.API.Models
 {
     public class Teacher :  User
     {
-        public Teacher(string name, string email, string phone) : base(name, email, phone)
+        public Teacher(string name, string email, string phone, string password) : base(name, email, phone, password)
         {
+            //TaughtCourses = new List<String>();
         }
+
+        //public List<String> TaughtCourses { get; private set; }
     }
 }

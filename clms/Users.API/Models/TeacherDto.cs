@@ -7,5 +7,6 @@ namespace Users.API.Models
 {
     public class TeacherDto : UserDto
     {
+        //public List<String> TaughtClasses { get; set;}
     }
 }
