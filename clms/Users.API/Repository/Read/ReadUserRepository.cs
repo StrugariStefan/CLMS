@@ -25,6 +25,16 @@ namespace Users.API.Repository.Read
             return _context.Users.ToList();
         }
 
+        public IReadOnlyList<Student> GetAllStudents()
+        {
+            return _context.Users.OfType<Student>().ToList();
+        }
+
+        public IReadOnlyList<Teacher> GetAllTeachers()
+        {
+            return _context.Users.OfType<Teacher>().ToList();
+        }
+
         public bool Exists(Guid id)
         {
             return _context.Users.Any(p => p.Id == id);

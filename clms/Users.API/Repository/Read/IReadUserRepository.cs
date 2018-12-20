@@ -8,6 +8,8 @@ namespace Users.API.Repository.Read
     {
         User GetById(Guid id);
         IReadOnlyList<User> GetAll();
+        IReadOnlyList<Student> GetAllStudents();
+        IReadOnlyList<Teacher> GetAllTeachers();
         bool Exists(Guid id);
         void SaveChanges();
     }

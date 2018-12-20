@@ -46,6 +46,8 @@ namespace Users.API
             services.AddTransient<IWriteUserRepository, WriteUserRepository>();
             services.AddTransient<IMapper<User, UserDto>, Mapper<User, UserDto>>();
             services.AddTransient<IMapper<User, UserCreateDto>, Mapper<User, UserCreateDto>>();
+            services.AddTransient<IMapper<Student, StudentDto>, Mapper<Student, StudentDto>>();
+            services.AddTransient<IMapper<Teacher, TeacherDto>, Mapper<Teacher, TeacherDto>>();
             services.AddTransient<IValidator<UserDto>, UserDtoValidator>();
 
             services
