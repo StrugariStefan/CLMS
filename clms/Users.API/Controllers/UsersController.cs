@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Users.API.Helpers;
 using Users.API.Models;
@@ -79,7 +80,11 @@ namespace Users.API.Controllers
                 return BadRequest();
             }
 
-            User user = _createMapper.DtoToEntity(userCreateDto);
+            Mapper.Initialize(cfg => {
+                cfg.CreateMap<UserCreateDto, User>().ConvertUsing(s => new User(s.Name, s.Email, s.Phone, s.Password));
+            });
+
+            User user = Mapper.Map<UserCreateDto, User>(userCreateDto);
 
             if (!ModelState.IsValid)
             {
