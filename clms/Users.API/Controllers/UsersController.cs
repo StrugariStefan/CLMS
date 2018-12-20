@@ -8,6 +8,7 @@ using Users.API.Repository.Write;
 
 namespace Users.API.Controllers
 {
+
     [Route("api/v1/users")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -26,6 +27,10 @@ namespace Users.API.Controllers
             _createMapper = createMapper;
         }
 
+        /// <summary>
+        /// Obtains an user by id.
+        /// </summary>
+        /// <param name="id"></param> 
         [HttpGet("{id}", Name = "GetByUserId")]
         public ActionResult<UserDto> GetById(Guid id)
         {
@@ -37,12 +42,18 @@ namespace Users.API.Controllers
             return Ok(_mapper.EntityToDto(_readRepository.GetById(id)));
         }
 
+        /// <summary>
+        /// Returns all users.
+        /// </summary>  
         [HttpGet]
         public ActionResult<IReadOnlyList<UserDto>> Get()
         {
             return Ok(_mapper.EntityCollectionToDtoCollection(_readRepository.GetAll()));
         }
 
+        /// <summary>
+        /// Deletes an user by id.
+        /// </summary>  
         [HttpDelete("{id}")]
         public ActionResult<User> Delete(Guid id)
         {
@@ -57,7 +68,9 @@ namespace Users.API.Controllers
             return NoContent();
         }
 
-
+        /// <summary>
+        /// Registers an user.
+        /// </summary>  
         [HttpPost]
         public ActionResult<User> Create([FromBody] UserCreateDto userCreateDto)
         {
