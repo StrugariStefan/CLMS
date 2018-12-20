@@ -6,11 +6,11 @@ using AutoMapper;
 
 namespace Users.API.Helpers
 {
-    public class Mapper2<E, D> : IMapper<E, D>
+    public class Mapper<E, D> : IMapper<E, D>
     {
         public MapperConfiguration Config { get; private set; }
 
-        public Mapper2()
+        public Mapper()
         {
             Config = new MapperConfiguration(entity =>
             {
