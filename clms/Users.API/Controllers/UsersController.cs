@@ -73,8 +73,6 @@ namespace Users.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            User user = _mapper.DtoToEntity(userDto);
-
             _writeRepository.Create(user);
             _writeRepository.SaveChanges();
 
