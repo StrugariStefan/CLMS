@@ -16,17 +16,12 @@ namespace Users.API.Controllers
     public class TeachersController : ControllerBase
     {
         private readonly IReadRepository<Teacher> _readRepository;
-        private readonly IWriteRepository<Teacher> _writeRepository;
-        //todo (mapper pt teacher si teacher dto, stergeti cele cu useri de aici)
-        private readonly IMapper<User, UserDto> _mapper;
-        private readonly IMapper<User, UserCreateDto> _createMapper;
+        private readonly IMapper<Teacher, TeacherDto> _mapper;
 
-        public TeachersController(IReadRepository<Teacher> readRepository, IWriteRepository<Teacher> writeRepository, IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
+        public TeachersController(IReadRepository<Teacher> readRepository, IMapper<Teacher, TeacherDto> mapper)
         {
             _readRepository = readRepository;
-            _writeRepository = writeRepository;
             _mapper = mapper;
-            _createMapper = createMapper;
         }
 
         /// <summary>
