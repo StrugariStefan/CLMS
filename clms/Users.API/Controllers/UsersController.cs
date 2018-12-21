@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Users.API.Helpers;
 using Users.API.Models;
@@ -14,19 +12,17 @@ namespace Users.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ReadUserRepository _readRepository;
-        private readonly IWriteRepository<User> _writeRepository;
-        private readonly IMapper<User, UserDto> _mapper;
-        private readonly IMapper<User, UserCreateDto> _createMapper;
+        private readonly IReadRepository _readRepository;
+        private readonly IWriteRepository _writeRepository;
+        private readonly IMapper _mapper;
 
 
-        public UsersController(ReadUserRepository readRepository, IWriteRepository<User> writeRepository,
-            IMapper<User, UserDto> mapper, IMapper<User, UserCreateDto> createMapper)
+        public UsersController(IReadRepository readRepository, IWriteRepository writeRepository,
+            IMapper mapper)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
             _mapper = mapper;
-            _createMapper = createMapper;
         }
 
         /// <summary>
@@ -47,7 +43,7 @@ namespace Users.API.Controllers
         /// <summary>
         /// Obtains all users by role.
         /// </summary>
-        [HttpGet("/role/{role}", Name = "GetByRole")]
+        [HttpGet("role/{role}", Name = "GetByRole")]
         public ActionResult<IReadOnlyList<UserDto>> GetByRole(int role)
         {
             return Ok(_mapper.EntityCollectionToDtoCollection(_readRepository.GetByRole(role)));
@@ -100,26 +96,12 @@ namespace Users.API.Controllers
                 return BadRequest("The e-mail address is already used.");
             }
 
-
-            MapperConfiguration config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<UserCreateDto, User>().ConvertUsing(s => new User(s.Name, s.Email, s.Phone, Hash(s.Password), s.Role));
-            });
-
-            User user = config.CreateMapper().Map<User>(userCreateDto);
+            User user = _mapper.DtoToEntity(userCreateDto);
 
             _writeRepository.Create(user);
             _writeRepository.SaveChanges();
 
             return CreatedAtRoute("GetByUserId", new {id = user.Id}, user);
-        }
-
-        private string Hash(string password)
-        {
-            byte[] hash = SHA256.Create().ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            string hashedPassword = System.Text.Encoding.UTF8.GetString(hash);
-
-            return hashedPassword;
         }
     }
 }

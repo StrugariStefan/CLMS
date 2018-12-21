@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Users.API.Models;
 
 namespace Users.API.Helpers
 {
-    public interface IMapper<E, D>
+    public interface IMapper
     {
-        E DtoToEntity(D dto);
-        D EntityToDto(E entity);
-        IEnumerable<D> EntityCollectionToDtoCollection(IEnumerable<E> entities);
+        User DtoToEntity(UserCreateDto dto);
+        UserDto EntityToDto(User user);
+        IEnumerable<UserDto> EntityCollectionToDtoCollection(IEnumerable<User> users);
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
+using Users.API.Models;
 
 namespace Users.API.Repository.Write
 {
-    public interface IWriteRepository<T>
+    public interface IWriteRepository
     {
-        void Create(T user);
+        void Create(User user);
         void Delete(Guid id);
         bool Exists(Guid id);
         void SaveChanges();

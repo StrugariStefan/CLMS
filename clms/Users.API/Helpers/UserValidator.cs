@@ -3,7 +3,6 @@ using Users.API.Models;
 
 namespace Users.API.Helpers
 {
-//    https://cecilphillip.com/fluent-validation-rules-with-asp-net-core/
     public class UserValidator : AbstractValidator<UserCreateDto>
     {
         public UserValidator()
