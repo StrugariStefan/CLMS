@@ -5,7 +5,7 @@ using Users.API.Models;
 
 namespace Users.API.Repository.Write
 {
-    public class WriteUserRepository : IWriteRepository<User>
+    public class WriteUserRepository : IWriteRepository
     {
         private readonly ApplicationContext _context;
 

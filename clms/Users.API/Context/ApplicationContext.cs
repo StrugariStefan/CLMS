@@ -11,8 +11,6 @@ namespace Users.API.Context
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Student> Students { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,8 +21,6 @@ namespace Users.API.Context
             modelBuilder.Entity<User>().HasIndex(p => p.Email).IsUnique();
             modelBuilder.Entity<User>().Property(p => p.Password).IsRequired();
             modelBuilder.Entity<User>().Property(p => p.Role).IsRequired();
-            modelBuilder.Entity<Student>().HasBaseType<User>();
-            modelBuilder.Entity<Teacher>().HasBaseType<User>();
         }
     }
 }

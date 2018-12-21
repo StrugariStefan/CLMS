@@ -6,7 +6,7 @@ using Users.API.Models;
 
 namespace Users.API.Repository.Read
 {
-    public class ReadUserRepository : IReadRepository<User>
+    public class ReadUserRepository : IReadRepository
     {
         private readonly ApplicationContext _context;
 
