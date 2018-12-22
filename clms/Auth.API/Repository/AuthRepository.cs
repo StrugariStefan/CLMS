@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using Auth.API.Models;
 using RestSharp;
 
 namespace Auth.API.Repository
@@ -15,9 +16,9 @@ namespace Auth.API.Repository
             return Tokens.Contains(token);
         }
 
-        public string Login(string email, string password)
+        public string Login(LoginRequest loginRequest)
         {
-            if (IsUserRegistered(email, password))
+            if (IsUserRegistered(loginRequest))
             {
                 string token = Guid.NewGuid().ToString();
                 Tokens.Add(token);
@@ -27,12 +28,13 @@ namespace Auth.API.Repository
             return null;
         }
 
-        private bool IsUserRegistered(string email, string password)
+        private bool IsUserRegistered(LoginRequest loginRequest)
         {
             string uri = $"http://localhost:5001/api/v1/users/registered";
 
             RestRequest request = new RestRequest();
             request.Method = Method.POST;
+            request.AddBody(loginRequest);
 
             return new HttpClient().GetAsync(uri).Result.StatusCode == HttpStatusCode.OK;
         }

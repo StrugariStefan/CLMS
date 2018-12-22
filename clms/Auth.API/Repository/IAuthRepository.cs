@@ -1,8 +1,10 @@
-﻿namespace Auth.API.Repository
+﻿using Auth.API.Models;
+
+namespace Auth.API.Repository
 {
     public interface IAuthRepository
     {
         bool IsLoggedIn(string token);
-        string Login(string email, string password);
+        string Login(LoginRequest loginRequest);
     }
 }

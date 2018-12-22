@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using Auth.API.Services;
-using Microsoft.AspNetCore.Authentication;
+﻿using Auth.API.Models;
+using Auth.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.API.Controllers
@@ -9,17 +8,17 @@ namespace Auth.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly IAuthRepository _authRepository;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthRepository authRepository)
         {
-            _authService = authService;
+            _authRepository = authRepository;
         }
 
         [HttpGet("loggedIn/{token}")]
         public ActionResult LoggedIn(string token)
         {
-            if (_authService.IsLoggedIn(token))
+            if (_authRepository.IsLoggedIn(token))
             {
                 return Ok();
             }
@@ -29,9 +28,9 @@ namespace Auth.API.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult<string> Login([FromBody] string email, string password)
+        public ActionResult<string> Login([FromBody] LoginRequest loginRequest)
         {
-            string token = _authService.Login(email, password);
+            string token = _authRepository.Login(loginRequest);
             if (token == null)
             {
                 return NotFound();
