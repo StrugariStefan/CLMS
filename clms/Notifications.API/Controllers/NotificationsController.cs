@@ -1,9 +1,7 @@
-﻿using System;
+﻿using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.AspNetCore.Mvc;
-using Notifications.API.Helpers;
 using Notifications.API.Models;
-using Notifications.API.Models.Dtos;
-using Notifications.API.Models.Entities;
+using Notifications.API.Service;
 
 namespace Notifications.API.Controllers
 {
@@ -11,14 +9,22 @@ namespace Notifications.API.Controllers
     [ApiController]
     public class NotificationsController : ControllerBase
     {
+        private readonly IEmailService _emailService;
+        private readonly ISmsService _smsService;
+
+        public NotificationsController(IEmailService emailService, ISmsService smsService)
+        {
+            _emailService = emailService;
+            _smsService = smsService;
+        }
 
         /// <summary>
         /// Sends an e-mail.
         /// </summary>  
         [HttpPost("email")]
-        public ActionResult SendEmail([FromBody] EmailDto emailDto)
+        public ActionResult SendEmail([FromBody] Email email)
         {
-            if (emailDto == null)
+            if (email == null)
             {
                 return BadRequest();
             }
@@ -28,7 +34,7 @@ namespace Notifications.API.Controllers
                 return BadRequest(ModelState);
             }
 
-//            _emailService.sendEmail(Email);
+            _emailService.send(email);
 
             return Ok();
         }
@@ -37,9 +43,9 @@ namespace Notifications.API.Controllers
         /// Sends an sms.
         /// </summary>  
         [HttpPost("sms")]
-        public ActionResult SendSms([FromBody] SmsDto smsDto)
+        public ActionResult SendSms([FromBody] Sms sms)
         {
-            if (smsDto == null)
+            if (sms == null)
             {
                 return BadRequest();
             }
@@ -49,7 +55,7 @@ namespace Notifications.API.Controllers
                 return BadRequest(ModelState);
             }
 
-//            _smsService.sendSms(Sms);
+            _smsService.send(sms);
 
             return Ok();
         }

@@ -2,7 +2,7 @@
 
 namespace Notifications.API.Models
 {
-    public class EmailDto
+    public class Email
     {
         public string From { get; set; }
         public List<string> To { get; set; }

@@ -6,9 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Notifications.API.Helpers;
-using Notifications.API.Models.Dtos;
-using Notifications.API.Models.Entities;
 using Notifications.API.Service;
 
 namespace Notifications.API
