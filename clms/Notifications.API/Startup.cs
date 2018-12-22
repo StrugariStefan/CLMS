@@ -1,12 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Notifications.API.Models;
 using Notifications.API.Service;
+using Notifications.API.Validators;
 
 namespace Notifications.API
 {
@@ -40,9 +44,16 @@ namespace Notifications.API
                 options.IncludeXmlComments(xmlPath);
             });
 
+            services.AddTransient<IValidator<Sms>, SmsValidator>();
+//            services.AddTransient<IValidator<Sms>, SmsValidator>();
+
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ISmsService, SmsService>();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddMvc()
+                .AddFluentValidation(fvc =>
+                    fvc.RegisterValidatorsFromAssemblyContaining<Startup>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

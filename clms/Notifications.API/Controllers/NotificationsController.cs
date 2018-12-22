@@ -45,11 +45,6 @@ namespace Notifications.API.Controllers
         [HttpPost("sms")]
         public ActionResult SendSms([FromBody] Sms sms)
         {
-            if (sms == null)
-            {
-                return BadRequest();
-            }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
