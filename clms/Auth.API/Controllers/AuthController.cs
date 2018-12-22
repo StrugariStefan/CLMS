@@ -19,7 +19,6 @@ namespace Auth.API.Controllers
         [HttpGet("loggedIn/{token}")]
         public ActionResult LoggedIn(string token)
         {
-//            List<string> tokens = new List<string>() {"testToken"};
             if (_authService.IsLoggedIn(token))
             {
                 return Ok();
@@ -30,9 +29,15 @@ namespace Auth.API.Controllers
         }
 
         [HttpPost("login")]
-        public string Login([FromBody] string email, string password)
+        public ActionResult<string> Login([FromBody] string email, string password)
         {
-            return _authService.Login(email, password);
+            string token = _authService.Login(email, password);
+            if (token == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(token);
         }
     }
 }
