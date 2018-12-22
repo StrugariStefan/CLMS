@@ -29,11 +29,7 @@ namespace Notifications.API.Filters
 
         private bool IsAuthTokenValid(string token)
         {
-            string uri = $"http://localhost:5003/api/v1/auth/tokens/{token}";
-
-            RestRequest request = new RestRequest();
-            request.Method = Method.POST;
-
+            string uri = $"http://localhost:5003/api/v1/auth/loggedIn/{token}";
             return new HttpClient().GetAsync(uri).Result.StatusCode == HttpStatusCode.OK;
         }
     }

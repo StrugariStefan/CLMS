@@ -32,11 +32,14 @@ namespace Auth.API.Repository
         {
             string uri = $"http://localhost:5001/api/v1/users/registered";
 
-            RestRequest request = new RestRequest();
-            request.Method = Method.POST;
-            request.AddBody(loginRequest);
+            RestClient client = new RestClient(uri);
+            RestRequest request = new RestRequest(Method.POST);
+            request.AddJsonBody(loginRequest);
 
-            return new HttpClient().GetAsync(uri).Result.StatusCode == HttpStatusCode.OK;
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine("Auth Repository: ---------------------");
+            Console.WriteLine(response);
+            return response.StatusCode == HttpStatusCode.OK;
         }
     }
 }

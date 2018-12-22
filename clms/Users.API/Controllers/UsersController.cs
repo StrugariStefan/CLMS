@@ -108,5 +108,23 @@ namespace Users.API.Controllers
 
             return CreatedAtRoute("GetByUserId", new {id = user.Id}, user);
         }
+
+        /// <summary>
+        /// Checks if a user is registered.
+        /// </summary>  
+        [HttpPost("registered")]
+        public ActionResult Registered([FromBody] RegisteredRequest registeredRequest)
+        {
+            string email = registeredRequest.Email;
+            string password = registeredRequest.Password.Hash();
+            User user = _readRepository.GetByEmailAndPassword(email, password);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
     }
 }
