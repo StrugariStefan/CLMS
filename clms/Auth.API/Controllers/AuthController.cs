@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Auth.API.Models;
+using Auth.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.API.Controllers
@@ -7,35 +8,35 @@ namespace Auth.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        
-        [HttpGet("tokens/{token}")]
-        public ActionResult Get(string token)
+        private readonly IAuthRepository _authRepository;
+
+        public AuthController(IAuthRepository authRepository)
         {
-            List<string> tokens = new List<string>() {"testToken"};
-            if (tokens.Contains(token))
+            _authRepository = authRepository;
+        }
+
+        [HttpGet("loggedIn/{token}")]
+        public ActionResult LoggedIn(string token)
+        {
+            if (_authRepository.IsLoggedIn(token))
             {
                 return Ok();
             }
 
             return NotFound();
+            
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("login")]
+        public ActionResult<string> Login([FromBody] LoginRequest loginRequest)
         {
-        }
+            string token = _authRepository.Login(loginRequest);
+            if (token == null)
+            {
+                return NotFound();
+            }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok(token);
         }
     }
 }

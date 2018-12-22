@@ -12,5 +12,6 @@ namespace Users.API.Repository.Read
         IReadOnlyList<User> GetByRole(int role);
         bool Exists(Guid id);
         void SaveChanges();
+        User GetByEmailAndPassword(string email, string password);
     }
 }

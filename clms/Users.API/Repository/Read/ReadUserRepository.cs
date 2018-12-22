@@ -40,6 +40,11 @@ namespace Users.API.Repository.Read
             _context.SaveChanges();
         }
 
+        public User GetByEmailAndPassword(string email, string password)
+        {
+            return _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+        }
+
         public IReadOnlyList<User> GetByRole(int role)
         {
             return _context.Users.Where(u => u.Role == role).ToList();
