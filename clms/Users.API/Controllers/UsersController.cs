@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Notifications.API.Filters;
 using Users.API.Helpers;
 using Users.API.Models;
 using Users.API.Repository.Read;
@@ -28,7 +29,8 @@ namespace Users.API.Controllers
         /// <summary>
         /// Obtains an user by id.
         /// </summary>
-        /// <param name="id"></param> 
+        /// <param name="id"></param>
+        [AuthFilter]
         [HttpGet("{id}", Name = "GetByUserId")]
         public ActionResult<UserDto> GetById(Guid id)
         {
@@ -43,6 +45,7 @@ namespace Users.API.Controllers
         /// <summary>
         /// Obtains all users by role.
         /// </summary>
+        [AuthFilter]
         [HttpGet("role/{role}", Name = "GetByRole")]
         public ActionResult<IReadOnlyList<UserDto>> GetByRole(int role)
         {
@@ -52,6 +55,7 @@ namespace Users.API.Controllers
         /// <summary>
         /// Returns all users.
         /// </summary>  
+        [AuthFilter]
         [HttpGet]
         public ActionResult<IReadOnlyList<UserDto>> Get()
         {
@@ -60,7 +64,8 @@ namespace Users.API.Controllers
 
         /// <summary>
         /// Deletes an user by id.
-        /// </summary>  
+        /// </summary>
+        [AuthFilter]
         [HttpDelete("{id}")]
         public ActionResult<User> Delete(Guid id)
         {
