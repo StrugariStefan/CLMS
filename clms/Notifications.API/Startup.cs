@@ -36,14 +36,12 @@ namespace Notifications.API
                     Description = "The Notifications Micro-service HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
+
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
             });
-
-            services.AddTransient<IMapper<Email, EmailDto>, EmailMapper>();
-            services.AddTransient<IMapper<Sms, SmsDto>, SmsMapper>();
 
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ISmsService, SmsService>();

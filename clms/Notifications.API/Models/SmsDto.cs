@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Notifications.API.Models.Dtos
+namespace Notifications.API.Models
 {
     public class SmsDto
     {
