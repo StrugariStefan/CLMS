@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Notifications.API.Models;
-using Notifications.API.Service;
+using Notifications.API.Services;
 using Notifications.API.Validators;
 
 namespace Notifications.API
@@ -49,6 +49,7 @@ namespace Notifications.API
 
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ISmsService, SmsService>();
+
             services
                 .AddMvc()
                 .AddFluentValidation(fvc =>
