@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Notifications.API.Models;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -23,29 +24,26 @@ namespace Notifications.API.Services
             RestRequest request = new RestRequest();
             request.Method = Method.POST;
 
-            request.AddParameter("domain", domain, ParameterType.UrlSegment);
             request.Resource = resource;
+            request.AddParameter("domain", domain, ParameterType.UrlSegment);
+            
             request.AddParameter("from", from);
-
-            foreach (string toRecipient in email.To)
-            {
-                request.AddParameter("to", toRecipient);
-            }
-
-            foreach (string ccRecipient in email.Cc)
-            {
-                request.AddParameter("cc", ccRecipient);
-            }
-
-            foreach (string bccRecipient in email.Bcc)
-            {
-                request.AddParameter("bcc", bccRecipient);
-            }
+            addRecipients(request, "to", email.To);
+            addRecipients(request, "cc", email.Cc);
+            addRecipients(request, "bcc", email.Bcc);
 
             request.AddParameter("subject", email.Subject);
             request.AddParameter("text", email.Body);
 
             client.Execute(request);
+        }
+
+        private void addRecipients(RestRequest request, string recipientType, List<string> recipients)
+        {
+            foreach (string recipient in recipients)
+            {
+                request.AddParameter(recipientType, recipient);
+            }
         }
     }
 }

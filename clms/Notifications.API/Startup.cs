@@ -45,10 +45,10 @@ namespace Notifications.API
             });
 
             services.AddTransient<IValidator<Sms>, SmsValidator>();
-//            services.AddTransient<IValidator<Sms>, SmsValidator>();
+            services.AddTransient<IValidator<Email>, EmailValidator>();
 
-            services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ISmsService, SmsService>();
+            services.AddTransient<IEmailService, EmailService>();
 
             services
                 .AddMvc()
