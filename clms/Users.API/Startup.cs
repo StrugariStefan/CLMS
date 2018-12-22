@@ -39,7 +39,7 @@ namespace Users.API
 
             services.AddTransient<IMapper, UserMapper>();
 
-            services.AddTransient<IValidator<UserCreateDto>, UserValidator>();
+            services.AddTransient<IValidator<UserDto>, UserValidator>();
 
             // Add framework services.
             services.AddSwaggerGen(options =>

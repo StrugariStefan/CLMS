@@ -13,11 +13,11 @@ namespace Users.API.Helpers
             Config = new MapperConfiguration(entity => { entity.CreateMap<User, UserDto>(); });
         }
 
-        public User DtoToEntity(UserCreateDto dto)
+        public User DtoToEntity(UserDto dto)
         {
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<UserCreateDto, User>()
+                cfg.CreateMap<UserDto, User>()
                     .ConvertUsing(s => new User(s.Name, s.Email, s.Phone, s.Password.Hash(), s.Role));
             });
 
