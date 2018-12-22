@@ -1,6 +1,6 @@
 ﻿using Notifications.API.Models;
 
-namespace Notifications.API.Service
+namespace Notifications.API.Services
 {
     public interface ISmsService
     {

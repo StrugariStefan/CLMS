@@ -1,7 +1,6 @@
-﻿using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Notifications.API.Models;
-using Notifications.API.Service;
+using Notifications.API.Services;
 
 namespace Notifications.API.Controllers
 {
