@@ -3,7 +3,7 @@ using Users.API.Models;
 
 namespace Users.API.Helpers
 {
-    public class UserValidator : AbstractValidator<UserCreateDto>
+    public class UserValidator : AbstractValidator<UserDto>
     {
         public UserValidator()
         {

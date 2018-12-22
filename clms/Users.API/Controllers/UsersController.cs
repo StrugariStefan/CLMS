@@ -79,9 +79,9 @@ namespace Users.API.Controllers
         /// Registers an user. Roles: 1 = student, 2 = teacher.
         /// </summary>  
         [HttpPost]
-        public ActionResult<User> Create([FromBody] UserCreateDto userCreateDto)
+        public ActionResult<User> Create([FromBody] UserDto userDto)
         {
-            if (userCreateDto == null)
+            if (userDto == null)
             {
                 return BadRequest();
             }
@@ -91,12 +91,12 @@ namespace Users.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (_readRepository.GetByEmail(userCreateDto.Email) != null)
+            if (_readRepository.GetByEmail(userDto.Email) != null)
             {
                 return BadRequest("The e-mail address is already used.");
             }
 
-            User user = _mapper.DtoToEntity(userCreateDto);
+            User user = _mapper.DtoToEntity(userDto);
 
             _writeRepository.Create(user);
             _writeRepository.SaveChanges();
