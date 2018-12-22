@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Notifications.API.Helpers;
+using Notifications.API.Models;
 using Notifications.API.Models.Dtos;
 using Notifications.API.Models.Entities;
 
@@ -15,7 +16,7 @@ namespace Notifications.API.Controllers
         /// Sends an e-mail.
         /// </summary>  
         [HttpPost("email")]
-        public ActionResult<Email> SendEmail([FromBody] EmailDto emailDto)
+        public ActionResult SendEmail([FromBody] EmailDto emailDto)
         {
             if (emailDto == null)
             {
@@ -27,7 +28,7 @@ namespace Notifications.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            NotificationsService.sendEmail(Email);
+//            _emailService.sendEmail(Email);
 
             return Ok();
         }
@@ -36,7 +37,7 @@ namespace Notifications.API.Controllers
         /// Sends an sms.
         /// </summary>  
         [HttpPost("sms")]
-        public ActionResult<Email> SendSms([FromBody] SmsDto smsDto)
+        public ActionResult SendSms([FromBody] SmsDto smsDto)
         {
             if (smsDto == null)
             {
@@ -48,7 +49,7 @@ namespace Notifications.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            NotificationsService.sendSms(Sms);
+//            _smsService.sendSms(Sms);
 
             return Ok();
         }
