@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using Auth.API.Models;
 using RestSharp;
 
@@ -37,8 +36,6 @@ namespace Auth.API.Repository
             request.AddJsonBody(loginRequest);
 
             IRestResponse response = client.Execute(request);
-            Console.WriteLine("Auth Repository: ---------------------");
-            Console.WriteLine(response);
             return response.StatusCode == HttpStatusCode.OK;
         }
     }

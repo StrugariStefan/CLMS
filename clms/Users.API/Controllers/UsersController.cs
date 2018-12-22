@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Notifications.API.Filters;
+using Users.API.Filters;
 using Users.API.Helpers;
 using Users.API.Models;
 using Users.API.Repository.Read;

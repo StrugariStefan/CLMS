@@ -28,9 +28,9 @@ namespace Auth.API
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
-                    Title = "Users HTTP API",
+                    Title = "Auth HTTP API",
                     Version = "v1",
-                    Description = "The Users Microservice HTTP API",
+                    Description = "The Auth Microservice HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
                 // Set the comments path for the Swagger JSON and UI.

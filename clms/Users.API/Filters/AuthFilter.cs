@@ -4,9 +4,8 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
-using RestSharp;
 
-namespace Notifications.API.Filters
+namespace Users.API.Filters
 {
     // https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions-1/controllers-and-routing/understanding-action-filters-cs
     public class AuthFilter : ActionFilterAttribute

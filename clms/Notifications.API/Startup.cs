@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Notifications.API.Helpers;
 using Notifications.API.Models;
 using Notifications.API.Services;
 using Notifications.API.Validators;
@@ -34,9 +35,10 @@ namespace Notifications.API
                 {
                     Title = "Notifications HTTP API",
                     Version = "v1",
-                    Description = "The Notifications Micro-service HTTP API",
+                    Description = "The Notifications microservice HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
+                options.OperationFilter<AddRequiredHeaderParameter>();
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

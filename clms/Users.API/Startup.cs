@@ -49,9 +49,11 @@ namespace Users.API
                 {
                     Title = "Users HTTP API",
                     Version = "v1",
-                    Description = "The Users Microservice HTTP API",
+                    Description = "The Users microservice HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
+                options.OperationFilter<AddRequiredHeaderParameter>();
+
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
