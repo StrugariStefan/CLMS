@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Notifications.API.Filters;
 using Notifications.API.Models;
 using Notifications.API.Services;
 
 namespace Notifications.API.Controllers
 {
+    [AuthFilter]
     [Route("api/notifications")]
     [ApiController]
     public class NotificationsController : ControllerBase

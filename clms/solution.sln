@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.API", "Users.API\Users.API.csproj", "{2DC12CC7-90F2-4F0C-92D9-C1F8AA3A6A38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.API", "Users.API\Users.API.csproj", "{2DC12CC7-90F2-4F0C-92D9-C1F8AA3A6A38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.API", "Notifications.API\Notifications.API.csproj", "{FFB8CE19-A050-4134-8835-FBBC7D737146}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notifications.API", "Notifications.API\Notifications.API.csproj", "{FFB8CE19-A050-4134-8835-FBBC7D737146}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.API", "Auth.API\Auth.API.csproj", "{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,18 @@ Global
 		{FFB8CE19-A050-4134-8835-FBBC7D737146}.Release|x64.Build.0 = Release|Any CPU
 		{FFB8CE19-A050-4134-8835-FBBC7D737146}.Release|x86.ActiveCfg = Release|Any CPU
 		{FFB8CE19-A050-4134-8835-FBBC7D737146}.Release|x86.Build.0 = Release|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Debug|x64.Build.0 = Debug|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Debug|x86.Build.0 = Debug|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Release|x64.ActiveCfg = Release|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Release|x64.Build.0 = Release|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F8B6363-6DDC-4A2D-9B0A-557B4D9D0249}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
