@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Primitives;
 using RestSharp;
 
 namespace Notifications.API.Filters
@@ -14,18 +17,23 @@ namespace Notifications.API.Filters
         // OnActionExecuting – This method is called before a controller action is executed.
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!IsAuthTokenValid())
+            StringValues headers = filterContext.HttpContext.Request.Headers["AuthToken"];
+            if (headers.Count == 0)
             {
-                Console.WriteLine("The auth token is not valid");
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
 
-            Console.WriteLine("Reuqest authenticated");
+            string token = headers.First();
+
+            if (!IsAuthTokenValid(token))
+            {
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
         }
 
-        private bool IsAuthTokenValid()
+        private bool IsAuthTokenValid(string token)
         {
-            string uri = "http://localhost:5003/api/v1/auth/tokens/testToken";
+            string uri = $"http://localhost:5003/api/v1/auth/tokens/{token}";
 
             RestRequest request = new RestRequest();
             request.Method = Method.POST;
