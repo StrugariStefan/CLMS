@@ -17,6 +17,7 @@ namespace Users.API.Helpers
                 Name = "AuthToken",
                 In = "header",
                 Type = "string",
+                Default = "testToken",
                 Required = false
             });
         }
