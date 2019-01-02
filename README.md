@@ -7,6 +7,7 @@
 ## Services
 - Users.API: http://localhost:5001/swagger/index.html
 - Notifications.API: http://localhost:5002/swagger/index.html
+- Auth.API: http://localhost:5003/swagger/index.html
 
 # Running the project
 - Follow the instructions from if you are not able to start the project by default: https://www.youtube.com/watch?v=N6U_3Dxxkks
