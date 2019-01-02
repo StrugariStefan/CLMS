@@ -38,5 +38,13 @@ namespace Auth.API.Controllers
 
             return Ok(token);
         }
+
+        [HttpPost("logout")]
+        public ActionResult<string> Logout([FromBody] LogoutRequest logoutRequest)
+        {
+            _authRepository.Logout(logoutRequest);
+         
+            return Ok();
+        }
     }
 }

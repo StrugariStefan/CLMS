@@ -27,6 +27,11 @@ namespace Auth.API.Repository
             return null;
         }
 
+        public void Logout(LogoutRequest logoutRequest)
+        {
+            Tokens.Remove(logoutRequest.Token);
+        }
+
         private bool IsUserRegistered(LoginRequest loginRequest)
         {
             string uri = $"http://localhost:5001/api/v1/users/registered";
