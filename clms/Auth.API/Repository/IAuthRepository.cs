@@ -6,5 +6,6 @@ namespace Auth.API.Repository
     {
         bool IsLoggedIn(string token);
         string Login(LoginRequest loginRequest);
+        void Logout(LogoutRequest logoutRequest);
     }
 }
