@@ -1,0 +1,142 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Courses.API.Filters;
+using Courses.API.Helpers;
+using Courses.API.Models;
+using Courses.API.Repository.Read;
+using Courses.API.Repository.Write;
+using Courses.API.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Courses.API.Controllers
+{
+    [Produces("application / json")]
+    [Route("api/v1/resourceFiles")]
+    [ApiController]
+    public class ResourceFilesController : ControllerBase
+    {
+        private readonly IReadResourceFileRepository _readResourceFileRepository;
+        private readonly IWriteResourceFileRepository _writeResourceFileRepository;
+        private readonly IReadCourseRepository _readCourseRepository;
+        private readonly IMapper<ResourceFile, ResourceFileDto, ResourceFileCreateDto> _mapper;
+        private readonly IFileStorageService _fileStorageService;
+
+        public ResourceFilesController(IReadResourceFileRepository readResourceFileRepository, IWriteResourceFileRepository writeResourceFileRepository, IMapper<ResourceFile, ResourceFileDto, ResourceFileCreateDto> mapper, IReadCourseRepository readCourseRepository, IFileStorageService fileStorageService)
+        {
+            _readResourceFileRepository = readResourceFileRepository;
+            _writeResourceFileRepository = writeResourceFileRepository;
+            _mapper = mapper;
+            _readCourseRepository = readCourseRepository;
+            _fileStorageService = fileStorageService;
+        }
+
+        /// <summary>
+        /// Return all resourceFiles.
+        /// </summary>
+        [HttpGet]
+        [AuthFilter]
+        [ProducesResponseType(200)]
+        public ActionResult<IReadOnlyList<ResourceFileDto>> Get()
+        {
+            return Ok(_mapper.EntityCollectionToDtoCollection(_readResourceFileRepository.GetAll()));
+        }
+
+
+        /// <summary>
+        /// Obtains resourceFile by id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <response code="200">Specified resourceFile</response>
+        /// <response code="404">If resourceFile id doesn't exists</response>
+        [HttpGet("{id}", Name = "GetByResourceFileId")]
+        [AuthFilter]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public ActionResult<ResourceFileDto> Get(Guid id)
+        {
+            if (!_readResourceFileRepository.Exists(id))
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.EntityToDto(_readResourceFileRepository.GetById(id)));
+        }
+
+        /// <summary>
+        /// Downloads a specified resource file
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpGet("download/{id}", Name = "GetFileById")]
+        [AuthFilter]
+        [ProducesResponseType(200)]
+        public FileResult Download(Guid id)
+        {
+            return File(new byte[1], System.Net.Mime.MediaTypeNames.Application.Octet, "file.txt");
+        }
+
+
+        /// <summary>
+        /// Creates a new resourceFile.
+        /// </summary>
+        /// <response code="201">The created resourceFile</response>
+        /// <response code="400">If resourceFileDto is null, model is not valid or course id doesn't exist</response>
+        [HttpPost]
+        [AuthFilter]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public ActionResult<ResourceFile> Post([FromBody] ResourceFileCreateDto resourceFileCreateDto, [FromForm] IFormFile resourceFile)
+        {
+            if (resourceFileCreateDto == null || resourceFile == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_readCourseRepository.Exists(resourceFileCreateDto.CourseId))
+            {
+                return BadRequest("Cannot assigne file to an non-existing course.");
+            }
+
+            ResourceFile resource = _mapper.DtoToEntity(resourceFileCreateDto);
+
+            _fileStorageService.UploadFile(resource.Id, resourceFile.OpenReadStream(), resourceFile.FileName);
+
+            _writeResourceFileRepository.Create(resource);
+            _writeResourceFileRepository.SaveChanges();
+
+
+
+            return CreatedAtRoute("GetByResourceFileId", new {id = resource.Id}, resource);
+        }
+
+        /// <summary>
+        /// Deletes a specific resourceFile.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <response code="204">ResourceFile has been deleted</response>
+        /// <response code="404">If resourceFile id is not found</response>
+        [HttpDelete("{id}")]
+        [AuthFilter]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public ActionResult<ResourceFile> Delete(Guid id)
+        {
+            if (!_writeResourceFileRepository.Exists(id))
+            {
+                return NotFound();
+            }
+
+            _writeResourceFileRepository.Delete(id);
+            _writeResourceFileRepository.SaveChanges();
+
+            return NoContent();
+        }
+    }
+}
