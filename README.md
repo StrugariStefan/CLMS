@@ -8,8 +8,19 @@
 - Users.API: http://localhost:5001/swagger/index.html
 - Notifications.API: http://localhost:5002/swagger/index.html
 - Auth.API: http://localhost:5003/swagger/index.html
+- Courses.API: http://localhost:5004/swagger/index.html
 
 # Running the project
+- After the appearance of a new microservice, you must run it individually with the following setting: 
+  **ServiceName.API -> ServiceName.API**; do not select IISExpress
+- To run solution as **Multiple Startup Projects**, you must follow this steps:
+    - right click on solution
+    - choose **Properties**
+    - check **Multiple startup projects**
+    - for each project select **Start** as Action
+    - click Apply -> Ok
+    - after this, you can see the following options: **Multiple Startup Projects -> Start**
+    - to test each microservice, access Swagger at the links from **Services** section
 - Follow the instructions from if you are not able to start the project by default: https://www.youtube.com/watch?v=N6U_3Dxxkks
 Notes:
 - Each service will be exposed at **http://localhost:500x/**
