@@ -17,7 +17,7 @@ namespace Courses.API.Helpers
             _dtoToEntityConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ResourceFileCreateDto, ResourceFile>()
-                    .ConvertUsing(r => new ResourceFile(r.Name, r.Description, r.Type, r.CourseId));
+                    .ConvertUsing(r => new ResourceFile(r.Resource.FileName, r.Description, r.Type, r.CourseId));
             });
             _entityToDtoConfig = new MapperConfiguration(entity => { entity.CreateMap<ResourceFile, ResourceFileDto>(); });
         }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Courses.API.Filters;
 using Courses.API.Helpers;
@@ -72,9 +75,25 @@ namespace Courses.API.Controllers
         [HttpGet("download/{id}", Name = "GetFileById")]
         [AuthFilter]
         [ProducesResponseType(200)]
-        public FileResult Download(Guid id)
+        public async Task<ActionResult> Download(Guid id)
         {
-            return File(new byte[1], System.Net.Mime.MediaTypeNames.Application.Octet, "file.txt");
+            if (!_readResourceFileRepository.Exists(id))
+            {
+                return NotFound();
+            }
+
+            ResourceFile resourceFile = _readResourceFileRepository.GetById(id);
+
+            //MemoryStream stream = await _fileStorageService.DownloadFile(id, resourceFile.Name);
+            //HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+            //httpResponseMessage.Content = new StreamContent(stream);
+            //httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            //httpResponseMessage.Content.Headers.ContentDisposition.FileName = resourceFile.Name;
+            //httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            //return httpResponseMessage;
+            return Redirect("https://clms.blob.core.windows.net/" + id.ToString() + "/" + resourceFile.Name);
+            //return File(stream.GetBuffer(), System.Net.Mime.MediaTypeNames.Application.Octet, resourceFile.Name);
         }
 
 
@@ -87,9 +106,11 @@ namespace Courses.API.Controllers
         [AuthFilter]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public ActionResult<ResourceFile> Post([FromBody] ResourceFileCreateDto resourceFileCreateDto, [FromForm] IFormFile resourceFile)
+        public async Task<ActionResult<ResourceFile>> Post([FromForm] ResourceFileCreateDto resourceFileCreateDto)
         {
-            if (resourceFileCreateDto == null || resourceFile == null)
+            Console.WriteLine(resourceFileCreateDto);
+
+            if (resourceFileCreateDto == null)
             {
                 return BadRequest();
             }
@@ -106,7 +127,7 @@ namespace Courses.API.Controllers
 
             ResourceFile resource = _mapper.DtoToEntity(resourceFileCreateDto);
 
-            _fileStorageService.UploadFile(resource.Id, resourceFile.OpenReadStream(), resourceFile.FileName);
+            await _fileStorageService.UploadFile(resource.Id, resourceFileCreateDto.Resource.OpenReadStream(), resourceFileCreateDto.Resource.FileName);
 
             _writeResourceFileRepository.Create(resource);
             _writeResourceFileRepository.SaveChanges();

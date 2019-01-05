@@ -10,6 +10,6 @@ namespace Courses.API.Services
     public interface IFileStorageService
     {
         Task UploadFile(Guid id, Stream stream, string fileName);
-        Task DownloadFile(Guid id, out Stream destinationStream, out string fileName);
+        Task<MemoryStream> DownloadFile(Guid id, string fileName);
     }
 }

@@ -24,15 +24,33 @@ namespace Courses.API.Services
 
         public async Task UploadFile(Guid id, Stream stream, string fileName)
         {
-            CloudBlobContainer blobContainer = _blobClient.GetContainerReference("couses");
+            CloudBlobContainer blobContainer = _blobClient.GetContainerReference(id.ToString());
             await blobContainer.CreateAsync();
-            CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(id.ToString());
+            BlobContainerPermissions permissions = new BlobContainerPermissions
+            {
+                PublicAccess = BlobContainerPublicAccessType.Blob
+            };
+            await blobContainer.SetPermissionsAsync(permissions);
+            CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(fileName);
             await blockBlob.UploadFromStreamAsync(stream);
         }
 
-        public Task DownloadFile(Guid id, out Stream destinationStream, out string fileName)
+        public async Task<MemoryStream> DownloadFile(Guid id, string fileName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                MemoryStream destinationStream = new MemoryStream();
+                CloudBlobContainer blobContainer = _blobClient.GetContainerReference(id.ToString());
+                CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(fileName);
+                await blockBlob.DownloadToStreamAsync(destinationStream);
+                return destinationStream;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Data);
+                return null;
+            }
+            
         }
     }
 }
