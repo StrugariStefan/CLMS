@@ -6,6 +6,7 @@ using Courses.API.Helpers;
 using Courses.API.Models;
 using Courses.API.Repository.Read;
 using Courses.API.Repository.Write;
+using Courses.API.Services;
 using Courses.API.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -34,10 +35,16 @@ namespace Courses.API
 
             services.AddTransient<IReadCourseRepository, ReadCourseRepository>();
             services.AddTransient<IWriteCourseRepository, WriteCourseRepository>();
+            services.AddTransient<IReadResourceFileRepository, ReadResourceFileRepository>();
+            services.AddTransient<IWriteResourceFileRepository, WriteResourceFileRepository>();
 
             services.AddTransient<IMapper<Course, CourseDto, CourseCreateDto>, CourseMapper>();
+            services.AddTransient<IMapper<ResourceFile, ResourceFileDto, ResourceFileCreateDto>, ResourceFileMapper>();
 
             services.AddTransient<IValidator<Course>, CourseValidator>();
+            services.AddTransient<IValidator<ResourceFile>, ResourceFileValidator>();
+
+            services.AddTransient<IFileStorageService, FileStorageService>();
 
 
             services.AddSwaggerGen(options =>
@@ -51,6 +58,7 @@ namespace Courses.API
                     TermsOfService = "Terms Of Service"
                 });
                 options.OperationFilter<AddRequiredHeaderParameter>();
+                options.OperationFilter<FormFileSwaggerFilter>();
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -63,6 +71,7 @@ namespace Courses.API
                 .AddFluentValidation(fvc =>
                     fvc.RegisterValidatorsFromAssemblyContaining<Startup>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
