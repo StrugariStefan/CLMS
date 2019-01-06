@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -10,16 +8,15 @@ namespace Courses.API.Services
 {
     public class FileStorageService : IFileStorageService
     {
-        private readonly CloudStorageAccount _storageAccount = null;
-        private readonly CloudBlobClient _blobClient = null;
+        private readonly CloudBlobClient _blobClient;
 
         private const string StorageConnectionString =
             "DefaultEndpointsProtocol=https;AccountName=clms;AccountKey=vmUpBVnJ3T90Pt3pp+W8Qu2TfMoDEaLqdctaUPDMpN7fZ35Knz6S1ctGhfq6JFSE5t1rD5pjOyp/mUJLP+ZonQ==;EndpointSuffix=core.windows.net";
 
         public FileStorageService()
         {
-            _storageAccount = CloudStorageAccount.Parse(StorageConnectionString);
-            _blobClient = _storageAccount.CreateCloudBlobClient();
+            var storageAccount = CloudStorageAccount.Parse(StorageConnectionString);
+            _blobClient = storageAccount.CreateCloudBlobClient();
         }
 
         public async Task UploadFile(Guid id, Stream stream, string fileName)
@@ -28,7 +25,7 @@ namespace Courses.API.Services
             await blobContainer.CreateAsync();
             BlobContainerPermissions permissions = new BlobContainerPermissions
             {
-                PublicAccess = BlobContainerPublicAccessType.Blob
+                PublicAccess = BlobContainerPublicAccessType.Off
             };
             await blobContainer.SetPermissionsAsync(permissions);
             CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(fileName);
@@ -51,6 +48,12 @@ namespace Courses.API.Services
                 return null;
             }
             
+        }
+
+        public async Task DeleteContainer(Guid id)
+        {
+            CloudBlobContainer blobContainer = _blobClient.GetContainerReference(id.ToString());
+            await blobContainer.DeleteIfExistsAsync();
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Courses.API.Filters;
 using Courses.API.Helpers;
@@ -11,7 +8,6 @@ using Courses.API.Models;
 using Courses.API.Repository.Read;
 using Courses.API.Repository.Write;
 using Courses.API.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Courses.API.Controllers
@@ -72,9 +68,13 @@ namespace Courses.API.Controllers
         /// Downloads a specified resource file
         /// </summary>
         /// <param name="id"></param>
+        /// <response code="200">Desired file is available for download</response>
+        /// <response code="404">File not found</response>
         [HttpGet("download/{id}", Name = "GetFileById")]
         [AuthFilter]
         [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [Produces("application / octet-stream")]
         public async Task<ActionResult> Download(Guid id)
         {
             if (!_readResourceFileRepository.Exists(id))
@@ -84,16 +84,9 @@ namespace Courses.API.Controllers
 
             ResourceFile resourceFile = _readResourceFileRepository.GetById(id);
 
-            //MemoryStream stream = await _fileStorageService.DownloadFile(id, resourceFile.Name);
-            //HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-            //httpResponseMessage.Content = new StreamContent(stream);
-            //httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-            //httpResponseMessage.Content.Headers.ContentDisposition.FileName = resourceFile.Name;
-            //httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-
-            //return httpResponseMessage;
-            return Redirect("https://clms.blob.core.windows.net/" + id.ToString() + "/" + resourceFile.Name);
-            //return File(stream.GetBuffer(), System.Net.Mime.MediaTypeNames.Application.Octet, resourceFile.Name);
+            MemoryStream stream = await _fileStorageService.DownloadFile(id, resourceFile.Name);
+            
+            return File(stream.ToArray(), System.Net.Mime.MediaTypeNames.Application.Octet, resourceFile.Name);
         }
 
 
@@ -147,7 +140,7 @@ namespace Courses.API.Controllers
         [AuthFilter]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public ActionResult<ResourceFile> Delete(Guid id)
+        public async Task<ActionResult<ResourceFile>> Delete(Guid id)
         {
             if (!_writeResourceFileRepository.Exists(id))
             {
@@ -156,6 +149,8 @@ namespace Courses.API.Controllers
 
             _writeResourceFileRepository.Delete(id);
             _writeResourceFileRepository.SaveChanges();
+
+            await _fileStorageService.DeleteContainer(id);
 
             return NoContent();
         }
