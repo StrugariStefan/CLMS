@@ -17,14 +17,12 @@ namespace Auth.API.Repository
 
         public string Login(LoginRequest loginRequest)
         {
-            if (IsUserRegistered(loginRequest))
-            {
-                string token = Guid.NewGuid().ToString();
-                Tokens.Add(token);
-                return token;
-            }
+            if (!IsUserRegistered(loginRequest)) return null;
 
-            return null;
+            var token = Guid.NewGuid().ToString();
+            Tokens.Add(token);
+            return token;
+
         }
 
         public void Logout(LogoutRequest logoutRequest)
@@ -32,15 +30,15 @@ namespace Auth.API.Repository
             Tokens.Remove(logoutRequest.Token);
         }
 
-        private bool IsUserRegistered(LoginRequest loginRequest)
+        private static bool IsUserRegistered(LoginRequest loginRequest)
         {
-            string uri = $"http://localhost:5001/api/v1/users/registered";
+            var uri = $"http://localhost:5001/api/v1/users/registered";
 
-            RestClient client = new RestClient(uri);
-            RestRequest request = new RestRequest(Method.POST);
+            var client = new RestClient(uri);
+            var request = new RestRequest(Method.POST);
             request.AddJsonBody(loginRequest);
 
-            IRestResponse response = client.Execute(request);
+            var response = client.Execute(request);
             return response.StatusCode == HttpStatusCode.OK;
         }
     }

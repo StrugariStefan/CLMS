@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Primitives;
 
 namespace Notifications.API.Filters
 {
@@ -13,8 +12,8 @@ namespace Notifications.API.Filters
         // OnActionExecuting – This method is called before a controller action is executed.
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            StringValues headers = filterContext.HttpContext.Request.Headers["AuthToken"];
-            string token = headers.FirstOrDefault();
+            var headers = filterContext.HttpContext.Request.Headers["AuthToken"];
+            var token = headers.FirstOrDefault();
 
             if (token == null)
             {
@@ -26,9 +25,9 @@ namespace Notifications.API.Filters
             }
         }
 
-        private bool IsAuthTokenValid(string token)
+        private static bool IsAuthTokenValid(string token)
         {
-            string uri = $"http://localhost:5003/api/v1/auth/loggedIn/{token}";
+            var uri = $"http://localhost:5003/api/v1/auth/loggedIn/{token}";
             return new HttpClient().GetAsync(uri).Result.StatusCode == HttpStatusCode.OK;
         }
     }

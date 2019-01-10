@@ -4,6 +4,6 @@ namespace Notifications.API.Services
 {
     public interface ISmsService
     {
-        void send(Sms sms);
+        void Send(Sms sms);
     }
 }

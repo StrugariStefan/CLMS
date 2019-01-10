@@ -6,15 +6,15 @@ namespace Notifications.API.Services
 {
     public class SmsService : ISmsService
     {
-        public void send(Sms sms)
+        public void Send(Sms sms)
         {
-            string accountSid = "AC088012c2dd67bad3f5f60b4f67f78065";
-            string authToken = "1a5c7b117a78d72dc3b72bdd1e354d25";
-            string from = "+48799448728";
+            const string accountSid = "AC088012c2dd67bad3f5f60b4f67f78065";
+            const string authToken = "1a5c7b117a78d72dc3b72bdd1e354d25";
+            const string from = "+48799448728";
 
             TwilioClient.Init(accountSid, authToken);
 
-            foreach (string to in sms.To)
+            foreach (var to in sms.To)
             {
                 MessageResource.Create(
                     from: new Twilio.Types.PhoneNumber(from),
