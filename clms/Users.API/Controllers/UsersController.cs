@@ -101,7 +101,7 @@ namespace Users.API.Controllers
                 return BadRequest("The e-mail address is already used.");
             }
 
-            User user = _mapper.DtoToEntity(userDto);
+            var user = _mapper.DtoToEntity(userDto);
 
             _writeRepository.Create(user);
             _writeRepository.SaveChanges();
@@ -111,13 +111,18 @@ namespace Users.API.Controllers
 
         /// <summary>
         /// Checks if a user is registered.
-        /// </summary>  
+        /// </summary>
+        [AuthFilter]
         [HttpPost("registered")]
         public ActionResult Registered([FromBody] RegisteredRequest registeredRequest)
         {
-            string email = registeredRequest.Email;
-            string password = registeredRequest.Password.Hash();
-            User user = _readRepository.GetByEmailAndPassword(email, password);
+            if (registeredRequest == null)
+            {
+                return BadRequest();
+            }
+            var email = registeredRequest.Email;
+            var password = registeredRequest.Password.Hash();
+            var user = _readRepository.GetByEmailAndPassword(email, password);
 
             if (user == null)
             {
