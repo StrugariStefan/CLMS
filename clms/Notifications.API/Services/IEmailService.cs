@@ -4,6 +4,6 @@ namespace Notifications.API.Services
 {
     public interface IEmailService
     {
-        void send(Email email);
+        void Send(Email email);
     }
 }

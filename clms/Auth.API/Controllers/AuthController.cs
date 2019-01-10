@@ -30,7 +30,12 @@ namespace Auth.API.Controllers
         [HttpPost("login")]
         public ActionResult<string> Login([FromBody] LoginRequest loginRequest)
         {
-            string token = _authRepository.Login(loginRequest);
+            if (loginRequest == null)
+            {
+                return BadRequest();
+            }
+
+            var token = _authRepository.Login(loginRequest);
             if (token == null)
             {
                 return NotFound();
@@ -42,6 +47,11 @@ namespace Auth.API.Controllers
         [HttpPost("logout")]
         public ActionResult<string> Logout([FromBody] LogoutRequest logoutRequest)
         {
+            if (logoutRequest == null)
+            {
+                return BadRequest();
+            }
+
             _authRepository.Logout(logoutRequest);
          
             return Ok();

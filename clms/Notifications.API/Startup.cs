@@ -35,7 +35,7 @@ namespace Notifications.API
                 {
                     Title = "Notifications HTTP API",
                     Version = "v1",
-                    Description = "The Notifications microservice HTTP API",
+                    Description = "The Notifications Microservice HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
                 options.OperationFilter<AddRequiredHeaderParameter>();

@@ -6,7 +6,7 @@ using Notifications.API.Services;
 namespace Notifications.API.Controllers
 {
     [AuthFilter]
-    [Route("api/notifications")]
+    [Route("api/v1/notifications")]
     [ApiController]
     public class NotificationsController : ControllerBase
     {
@@ -35,7 +35,7 @@ namespace Notifications.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            _emailService.send(email);
+            _emailService.Send(email);
 
             return Ok();
         }
@@ -46,12 +46,17 @@ namespace Notifications.API.Controllers
         [HttpPost("sms")]
         public ActionResult SendSms([FromBody] Sms sms)
         {
+            if (sms == null)
+            {
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _smsService.send(sms);
+            _smsService.Send(sms);
 
             return Ok();
         }
