@@ -15,6 +15,9 @@ namespace Auth.API.Controllers
             _authRepository = authRepository;
         }
 
+        /// <summary>
+        /// Checks if a user is logged in.
+        /// </summary>
         [HttpGet("loggedIn/{token}")]
         public ActionResult LoggedIn(string token)
         {
@@ -27,6 +30,9 @@ namespace Auth.API.Controllers
             
         }
 
+        /// <summary>
+        /// Logins a user.
+        /// </summary>
         [HttpPost("login")]
         public ActionResult<string> Login([FromBody] LoginRequest loginRequest)
         {
@@ -44,6 +50,9 @@ namespace Auth.API.Controllers
             return Ok(token);
         }
 
+        /// <summary>
+        /// Disconnects a user.
+        /// </summary>
         [HttpPost("logout")]
         public ActionResult<string> Logout([FromBody] LogoutRequest logoutRequest)
         {
