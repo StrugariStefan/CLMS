@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Gamification.API</name>
+    </assembly>
+    <members>
+        <member name="M:Gamification.API.Context.ApplicationContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Gamification.API.Context.ApplicationContext})">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
