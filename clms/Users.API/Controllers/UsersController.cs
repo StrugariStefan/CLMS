@@ -112,7 +112,6 @@ namespace Users.API.Controllers
         /// <summary>
         /// Checks if a user is registered.
         /// </summary>
-        [AuthFilter]
         [HttpPost("registered")]
         public ActionResult Registered([FromBody] RegisteredRequest registeredRequest)
         {
@@ -129,7 +128,7 @@ namespace Users.API.Controllers
                 return NotFound();
             }
 
-            return Ok();
+            return Ok(user.Id.ToString());
         }
     }
 }

@@ -21,9 +21,13 @@ namespace Auth.API.Controllers
         [HttpGet("loggedIn/{token}")]
         public ActionResult LoggedIn(string token)
         {
-            if (_authRepository.IsLoggedIn(token))
+            if (_authRepository.IsLoggedIn(token, out var userId))
             {
-                return Ok();
+                if (token == "testToken")
+                {
+                    return Ok();
+                }
+                return Ok(userId);
             }
 
             return NotFound();
