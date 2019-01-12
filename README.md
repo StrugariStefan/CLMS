@@ -9,6 +9,7 @@
 - Notifications.API: http://localhost:5002/swagger/index.html
 - Auth.API: http://localhost:5003/swagger/index.html
 - Courses.API: http://localhost:5004/swagger/index.html
+- Gamification.API: http://localhost:5005/swagger/index.html
 
 # Running the project
 - After the appearance of a new microservice, you must run it individually with the following setting: 
