@@ -20,7 +20,6 @@ namespace Gamification.API.Models
         public Guid Id { get; private set; }
         public string ActualAnswer { get; private set; }
         public Guid CreatedBy { get; private set; }
-
         public virtual Guid QuestionId { get; private set; }
     }
 }
