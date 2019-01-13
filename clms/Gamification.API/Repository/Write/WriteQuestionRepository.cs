@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Gamification.API.Models;
 using Gamification.API.Context;
 
@@ -24,13 +22,13 @@ namespace Gamification.API.Repository.Write
 
         public void Delete(Guid id)
         {
-            Question question = _context.Questions.First(r => r.Id == id);
+            Question question = _context.Questions.First(q => q.Id == id);
             _context.Remove(question);
         }
 
         public bool Exists(Guid id)
         {
-            return _context.Questions.Any(r => r.Id == id);
+            return _context.Questions.Any(q => q.Id == id);
         }
 
         public void SaveChanges()

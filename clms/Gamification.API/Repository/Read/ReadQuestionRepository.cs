@@ -17,7 +17,7 @@ namespace Gamification.API.Repository.Read
 
         public Question GetById(Guid id)
         {
-            return _context.Questions.FirstOrDefault(r => r.Id == id);
+            return _context.Questions.FirstOrDefault(q => q.Id == id);
         }
 
         public IReadOnlyList<Question> GetAll()
@@ -27,7 +27,7 @@ namespace Gamification.API.Repository.Read
 
         public bool Exists(Guid id)
         {
-            return _context.Questions.Any(r => r.Id == id);
+            return _context.Questions.Any(q => q.Id == id);
         }
 
         public void SaveChanges()
@@ -37,11 +37,11 @@ namespace Gamification.API.Repository.Read
 
         public IReadOnlyList<Question> GetByType(Models.Type type)
         {
-            return _context.Questions.Where(r => r.Type == type).ToList();
+            return _context.Questions.Where(q => q.Type == type).ToList();
         }
         public IReadOnlyList<Question> GetByLevelOfInterest(LevelOfInterest levelOfInterest)
         {
-            return _context.Questions.Where(r => r.LevelOfInterest == levelOfInterest).ToList();
+            return _context.Questions.Where(q => q.LevelOfInterest == levelOfInterest).ToList();
         }
 
     }

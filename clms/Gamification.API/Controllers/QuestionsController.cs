@@ -6,22 +6,21 @@ using Gamification.API.Models;
 using Gamification.API.Repository.Read;
 using Gamification.API.Repository.Write;
 using Microsoft.AspNetCore.Mvc;
+using Type = Gamification.API.Models.Type;
 
 namespace Gamification.API.Controllers
 {
-    public class QuestionsController
-    {
 
         [Produces("application / json")]
         [Route("api/v1/questions")]
         [ApiController]
-        public class CoursesController : ControllerBase
+        public class QuestionsController : ControllerBase
         {
             private readonly IReadQuestionRepository _readQuestionRepository;
             private readonly IWriteQuestionRepository _writeQuestionRepository;
             private readonly IMapper<Question, QuestionDto, QuestionCreateDto> _mapper;
 
-            public QuestionController(IReadQuestionRepository readQuestionRepository, IWriteQuestionRepository writeQuestionRepository, IMapper<Question, QuestionDto, QuestionCreateDto> mapper)
+            public QuestionsController(IReadQuestionRepository readQuestionRepository, IWriteQuestionRepository writeQuestionRepository, IMapper<Question, QuestionDto, QuestionCreateDto> mapper)
             {
                 _readQuestionRepository = readQuestionRepository;
                 _writeQuestionRepository = writeQuestionRepository;
@@ -44,7 +43,7 @@ namespace Gamification.API.Controllers
             /// </summary>
             /// <param name="id"></param>
             /// <response code="200">Specified question</response>
-            /// <response code="404">If question id doesn't exists</response>
+            /// <response code="404">If question id doesn't exist</response>
             [HttpGet("{id}", Name = "GetByQuestionId")]
             [AuthFilter]
             [ProducesResponseType(200)]
@@ -60,39 +59,65 @@ namespace Gamification.API.Controllers
             }
 
             /// <summary>
-            /// Obtains question by type.
+            /// Obtains questions by type.
             /// </summary>
-            /// <param name="name"></param>
-            /// <response code="200">Specified question</response>
-            /// <response code="404">If question name doesn't exists</response>
+            /// <param name="type"></param>
+            /// <response code="200">Specified questions</response>
+            /// <response code="404">If there are no questions with the specified type</response>
             [HttpGet("{type}", Name = "GetByQuestionType")]
             [AuthFilter]
             [ProducesResponseType(200)]
             [ProducesResponseType(404)]
-            public ActionResult<QuestionDto> GetByQuestion(string type)
+            public ActionResult<IReadOnlyList<QuestionDto>> GetByType(Type type)
             {
-                Question question= _readQuestionRepository.GetByType(type);
+                
+                IReadOnlyList<Question> questions = _readQuestionRepository.GetByType(type);
 
-                if (question == null)
+                if (questions == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(_mapper.EntityToDto(question));
+                return Ok(_mapper.EntityCollectionToDtoCollection(questions));
+              
             }
 
             /// <summary>
-            /// Creates a new course.
+            /// Obtains questions by level of interest.
             /// </summary>
-            /// <response code="201">The created course</response>
-            /// <response code="400">If courseDto is null, model is not valid or name already exists</response>
+            /// <param name="levelOfInterest"></param>
+            /// <response code="200">Specified questions</response>
+            /// <response code="404">If questions with the specified level of interest don't exist</response>
+            [HttpGet("{levelOfInterest}", Name = "GetByQuestionLevelOfInterest")]
+            [AuthFilter]
+            [ProducesResponseType(200)]
+            [ProducesResponseType(404)]
+            public ActionResult<IReadOnlyList<QuestionDto>> GetByLevelOfInterest(LevelOfInterest levelOfInterest)
+            {
+
+                IReadOnlyList<Question> questions = _readQuestionRepository.GetByLevelOfInterest(levelOfInterest);
+
+                if (questions == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(_mapper.EntityCollectionToDtoCollection(questions));
+
+            }
+
+            /// <summary>
+            /// Creates a new question.
+            /// </summary>
+            /// <response code="201">The created question</response>
+            /// <response code="400">If questionDto is null, model is not valid or name already exists</response>
             [HttpPost]
             [AuthFilter]
             [ProducesResponseType(201)]
             [ProducesResponseType(400)]
-            public ActionResult<Question> Post([FromBody] QuestionCreateDto courseCreateDto)
+            public ActionResult<Question> Post([FromBody] QuestionCreateDto questionCreateDto)
             {
-                if (courseCreateDto == null)
+                if (questionCreateDto == null)
                 {
                     return BadRequest();
                 }
@@ -102,25 +127,20 @@ namespace Gamification.API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                if (_readQuestionRepository.GetByName(courseQuestionDto.Name) != null)
-                {
-                    return BadRequest("Name of Course already exists.");
-                }
+                Question question = _mapper.DtoToEntity(questionCreateDto);
 
-                Question course = _mapper.DtoToEntity(courseCreateDto);
-
-                _writeQuestionRepository.Create(course);
+                _writeQuestionRepository.Create(question);
                 _writeQuestionRepository.SaveChanges();
 
-                return CreatedAtRoute("GetByCourseId", new { id = course.Id }, course);
+                return CreatedAtRoute("GetByQuestionId", new { id = question.Id }, question);
             }
 
             /// <summary>
-            /// Deletes a specific Course.
+            /// Deletes a specific Question.
             /// </summary>
             /// <param name="id"></param>
-            /// <response code="204">Course has been deleted</response>
-            /// <response code="404">If course id is not found</response>
+            /// <response code="204">Question has been deleted</response>
+            /// <response code="404">If question id is not found</response>
             [HttpDelete("{id}")]
             [AuthFilter]
             [ProducesResponseType(204)]
@@ -138,7 +158,5 @@ namespace Gamification.API.Controllers
                 return NoContent();
             }
         }
-    }
 
-}
 }

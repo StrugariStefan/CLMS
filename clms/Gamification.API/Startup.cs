@@ -1,5 +1,10 @@
 ﻿using System;
 using System.IO;
+using Gamification.API.Context;
+using Gamification.API.Helpers;
+using Gamification.API.Models;
+using Gamification.API.Repository.Read;
+using Gamification.API.Repository.Write;
 using System.Reflection;
 using Gamification.API.Context;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +29,15 @@ namespace Gamification.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GamificationDatabase")));
+            services.AddTransient<IReadQuestionRepository, ReadQuestionRepository>();
+            services.AddTransient<IWriteQuestionRepository, WriteQuestionRepository>();
+            services.AddTransient<IReadQuestionRepository, ReadQuestionRepository>();
+            services.AddTransient<IWriteQuestionRepository, WriteQuestionRepository>();
+
+            services.AddTransient<IMapper<Question, QuestionDto, QuestionCreateDto>, QuestionMapper>();
+
+           // services.AddTransient<IValidator<Question>, QuestionValidator>();
+           
 
             services.AddSwaggerGen(options =>
             {
