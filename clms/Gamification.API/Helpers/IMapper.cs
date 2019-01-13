@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Courses.API.Helpers
+namespace Gamification.API.Helpers
 {
     public interface IMapper<TE, out TD, in TC>
     {

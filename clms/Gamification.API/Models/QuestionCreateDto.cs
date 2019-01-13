@@ -12,6 +12,7 @@ namespace Gamification.API.Models
         public string ActualQuestion { get; set; }
         public LevelOfInterest LevelOfInterest { get; set; }
         public Type Type { get; set; }
-        public DateTime DeadLine { get; set; }
+        //public DateTime DeadLine { get; set; }
+        public decimal TimeInMinutes { get; set; }
     }
 }
