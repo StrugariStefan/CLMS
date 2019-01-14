@@ -7,7 +7,6 @@ using Gamification.API.Repository.Read;
 using Gamification.API.Repository.Write;
 using System.Reflection;
 using FluentValidation.AspNetCore;
-using Gamification.API.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,10 +31,11 @@ namespace Gamification.API
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GamificationDatabase")));
             services.AddTransient<IReadQuestionRepository, ReadQuestionRepository>();
             services.AddTransient<IWriteQuestionRepository, WriteQuestionRepository>();
-            services.AddTransient<IReadQuestionRepository, ReadQuestionRepository>();
-            services.AddTransient<IWriteQuestionRepository, WriteQuestionRepository>();
+            services.AddTransient<IReadScoreRepository, ReadScoreRepository>();
+            services.AddTransient<IWriteScoreRepository, WriteScoreRepository>();
 
             services.AddTransient<IMapper<Question, QuestionDto, QuestionCreateDto>, QuestionMapper>();
+            services.AddTransient<IMapper<Score, ScoreDto, ScoreDto>, ScoreMapper>();
 
            // services.AddTransient<IValidator<Question>, QuestionValidator>();
            
