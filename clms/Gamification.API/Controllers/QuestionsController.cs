@@ -57,20 +57,19 @@ namespace Gamification.API.Controllers
 
                 return Ok(_mapper.EntityToDto(_readQuestionRepository.GetById(id)));
             }
-
             /// <summary>
             /// Obtains questions by type.
             /// </summary>
             /// <param name="type"></param>
             /// <response code="200">Specified questions</response>
             /// <response code="404">If there are no questions with the specified type</response>
-            [HttpGet("{type}", Name = "GetByQuestionType")]
+            [HttpGet("type/{type}", Name = "GetByQuestionType")]
             [AuthFilter]
             [ProducesResponseType(200)]
             [ProducesResponseType(404)]
             public ActionResult<IReadOnlyList<QuestionDto>> GetByType(Type type)
             {
-                
+
                 IReadOnlyList<Question> questions = _readQuestionRepository.GetByType(type);
 
                 if (questions == null)
@@ -79,16 +78,16 @@ namespace Gamification.API.Controllers
                 }
 
                 return Ok(_mapper.EntityCollectionToDtoCollection(questions));
-              
+
             }
 
-            /// <summary>
-            /// Obtains questions by level of interest.
-            /// </summary>
-            /// <param name="levelOfInterest"></param>
-            /// <response code="200">Specified questions</response>
-            /// <response code="404">If questions with the specified level of interest don't exist</response>
-            [HttpGet("{levelOfInterest}", Name = "GetByQuestionLevelOfInterest")]
+        /// <summary>
+        /// Obtains questions by level of interest.
+        /// </summary>
+        /// <param name="levelOfInterest"></param>
+        /// <response code="200">Specified questions</response>
+        /// <response code="404">If questions with the specified level of interest don't exist</response>
+        [HttpGet("levelOfInterest/{levelOfInterest}", Name = "GetByQuestionLevelOfInterest")]
             [AuthFilter]
             [ProducesResponseType(200)]
             [ProducesResponseType(404)]
@@ -106,12 +105,13 @@ namespace Gamification.API.Controllers
 
             }
 
-            /// <summary>
-            /// Creates a new question.
-            /// </summary>
-            /// <response code="201">The created question</response>
-            /// <response code="400">If questionDto is null, model is not valid or name already exists</response>
-            [HttpPost]
+
+        /// <summary>
+        /// Creates a new question.
+        /// </summary>
+        /// <response code="201">The created question</response>
+        /// <response code="400">If questionDto is null, model is not valid or name already exists</response>
+        [HttpPost]
             [AuthFilter]
             [ProducesResponseType(201)]
             [ProducesResponseType(400)]
