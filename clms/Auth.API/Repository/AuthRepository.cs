@@ -13,11 +13,7 @@ namespace Auth.API.Repository
 
         public bool IsLoggedIn(string token, out Guid userId)
         {
-            if (Tokens.TryGetValue(token, out userId))
-            {
-                return userId != null;
-            }
-            return false;
+            return Tokens.TryGetValue(token, out userId);
         }
 
         public string Login(LoginRequest loginRequest)
