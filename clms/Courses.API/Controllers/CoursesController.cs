@@ -84,7 +84,7 @@ namespace Courses.API.Controllers
         /// <response code="201">The created course</response>
         /// <response code="400">If courseDto is null, model is not valid or name already exists</response>
         [HttpPost]
-        [AuthFilter]
+        [AuthFilter, RoleFilter]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public ActionResult<Course> Post([FromBody] CourseCreateDto courseCreateDto)
@@ -119,7 +119,7 @@ namespace Courses.API.Controllers
         /// <response code="204">Course has been deleted</response>
         /// <response code="404">If course id is not found</response>
         [HttpDelete("{id}")]
-        [AuthFilter]
+        [AuthFilter, RoleFilter]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public ActionResult<Course> Delete(Guid id)
