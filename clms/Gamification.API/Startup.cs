@@ -6,6 +6,7 @@ using Gamification.API.Models;
 using Gamification.API.Repository.Read;
 using Gamification.API.Repository.Write;
 using System.Reflection;
+using FluentValidation.AspNetCore;
 using Gamification.API.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,7 +58,11 @@ namespace Gamification.API
                 options.IncludeXmlComments(xmlPath);
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddMvc()
+                .AddFluentValidation(fvc =>
+                    fvc.RegisterValidatorsFromAssemblyContaining<Startup>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

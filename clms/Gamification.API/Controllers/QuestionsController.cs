@@ -64,7 +64,7 @@ namespace Gamification.API.Controllers
             /// <param name="type"></param>
             /// <response code="200">Specified questions</response>
             /// <response code="404">If there are no questions with the specified type</response>
-            [HttpGet("{type}", Name = "GetByQuestionType")]
+            [HttpGet("type/{type}", Name = "GetByQuestionType")]
             [AuthFilter]
             [ProducesResponseType(200)]
             [ProducesResponseType(404)]
@@ -88,7 +88,7 @@ namespace Gamification.API.Controllers
             /// <param name="levelOfInterest"></param>
             /// <response code="200">Specified questions</response>
             /// <response code="404">If questions with the specified level of interest don't exist</response>
-            [HttpGet("{levelOfInterest}", Name = "GetByQuestionLevelOfInterest")]
+            [HttpGet("levelOfInterest/{levelOfInterest}", Name = "GetByQuestionLevelOfInterest")]
             [AuthFilter]
             [ProducesResponseType(200)]
             [ProducesResponseType(404)]
