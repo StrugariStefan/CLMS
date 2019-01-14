@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Runtime.Serialization.Json;
-using Auth.API.Context;
 using Auth.API.Models;
 using Newtonsoft.Json;
 using RestSharp;
@@ -12,51 +9,30 @@ namespace Auth.API.Repository
 {
     public class AuthRepository : IAuthRepository
     {
-        private static readonly List<string> Tokens = new List<string>() { "testToken" };
-        private readonly ApplicationContext _context;
+        private static readonly Dictionary<string, Guid> Tokens = new Dictionary<string, Guid>() { {"testToken", Guid.Parse("faa4c22e-7238-4fc7-b036-12ae1860d03f")} };
 
-        public AuthRepository(ApplicationContext context)
+        public bool IsLoggedIn(string token, out Guid userId)
         {
-            _context = context;
-        }
-
-        public bool IsLoggedIn(string token, out string userId)
-        {
-            try
-            {
-                userId = _context.Tokens.FirstOrDefault(t => t.ActualToken == token).UserId.ToString();
-            }
-            catch (NullReferenceException e)
-            {
-                userId = null;
-            }
-            
-            return Tokens.Contains(token);
+            Tokens.TryGetValue(token, out userId);
+            return userId != null;
         }
 
         public string Login(LoginRequest loginRequest)
         {
             if (!IsUserRegistered(loginRequest, out var userId)) return null;
 
-            Token token = new Token(Guid.Parse(userId));
-            _context.Tokens.Add(token);
-            _context.SaveChanges();
-            //var token = Guid.NewGuid().ToString();
-            //Tokens.Add(token);
-            Tokens.Add(token.ActualToken);
-            return token.ActualToken;
+            var token = Guid.NewGuid().ToString();
+            Tokens.Add(token, userId);
+            return token;
 
         }
 
         public void Logout(LogoutRequest logoutRequest)
         {
-            var token = _context.Tokens.First(c => c.ActualToken == logoutRequest.Token);
-            _context.Tokens.Remove(token);
-            _context.SaveChanges();
             Tokens.Remove(logoutRequest.Token);
         }
 
-        private static bool IsUserRegistered(LoginRequest loginRequest, out string userId)
+        private static bool IsUserRegistered(LoginRequest loginRequest, out Guid userId)
         {
             var uri = $"http://localhost:5001/api/v1/users/registered";
 
@@ -65,7 +41,7 @@ namespace Auth.API.Repository
             request.AddJsonBody(loginRequest);
 
             var response = client.Execute(request);
-            userId = JsonConvert.DeserializeObject<string>(response.Content);
+            userId = JsonConvert.DeserializeObject<Guid>(response.Content);
             
             Console.WriteLine(userId);
             return response.StatusCode == HttpStatusCode.OK;
