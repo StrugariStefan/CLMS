@@ -12,7 +12,7 @@ namespace Gamification.API.Controllers
 {
 
     [Produces("application / json")]
-    [Route("api/v1/questions")]
+    [Route("api/v1/answers")]
     [ApiController]
     public class AnswersController : ControllerBase
     {
