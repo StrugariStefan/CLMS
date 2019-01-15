@@ -19,7 +19,7 @@
     },
     "Courses.API": {
       "commandName": "Project",
-      "launchBrowser": false,
+      "launchBrowser": true,
       "launchUrl": "swagger/index.html",
       "applicationUrl": "http://localhost:5004",
       "environmentVariables": {
