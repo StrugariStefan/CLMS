@@ -122,14 +122,21 @@ namespace Courses.API.Controllers
         /// <response code="204">Course has been deleted</response>
         /// <response code="404">If course id is not found</response>
         [HttpDelete("{id}")]
-        [AuthFilter, RoleFilter, OwnerFilter]
+        [AuthFilter, RoleFilter]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public ActionResult<Course> Delete(Guid id)
         {
-            if (!_writeCourseRepository.Exists(id))
+            if (!_readCourseRepository.Exists(id))
             {
                 return NotFound();
+            }
+
+            this.HttpContext.Items.TryGetValue("UserId", out var userId);
+
+            if (!_readCourseRepository.GetOwnerById(id).ToString().Equals(userId))
+            {
+                return BadRequest("You dont have owner privileges for this course.");
             }
 
             _writeCourseRepository.Delete(id);
