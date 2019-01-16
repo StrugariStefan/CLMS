@@ -95,10 +95,12 @@ namespace Courses.API.Controllers
         /// </summary>
         /// <response code="201">The created resourceFile</response>
         /// <response code="400">If resourceFileDto is null, model is not valid or course id doesn't exist</response>
+        /// <response code="401">Token Unauthorized.</response>
         [HttpPost]
         [AuthFilter, RoleFilter]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public async Task<ActionResult<ResourceFile>> Post([FromForm] ResourceFileCreateDto resourceFileCreateDto)
         {
             if (resourceFileCreateDto == null)
@@ -148,13 +150,19 @@ namespace Courses.API.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<ResourceFile>> Delete(Guid id)
         {
-            if (!_writeResourceFileRepository.Exists(id))
+            if (!_readResourceFileRepository.Exists(id))
             {
                 return NotFound();
             }
 
+            if (!_readResourceFileRepository.ExistsCourse(id))
+            {
+                return BadRequest("Cannot assigne file to an non-existing course.");
+            }
+
             this.HttpContext.Items.TryGetValue("UserId", out var userId);
-            if (!_readCourseRepository.GetOwnerById(id).ToString().Equals(userId))
+            var courseId = _readResourceFileRepository.GetCourseById(id);
+            if (!_readCourseRepository.GetOwnerById(courseId).ToString().Equals(userId))
             {
                 return BadRequest("You dont have owner privileges for this course.");
             }
