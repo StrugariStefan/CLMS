@@ -35,11 +35,16 @@ namespace Gamification.API
             services.AddTransient<IWriteQuestionRepository, WriteQuestionRepository>();
             services.AddTransient<IReadScoreRepository, ReadScoreRepository>();
             services.AddTransient<IWriteScoreRepository, WriteScoreRepository>();
+            services.AddTransient<IReadAnswerRepository, ReadAnswerRepository>();
+            services.AddTransient<IWriteAnswerRepository, WriteAnswerRepository>();
+
 
             services.AddTransient<IMapper<Question, QuestionDto, QuestionCreateDto>, QuestionMapper>();
             services.AddTransient<IMapper<Score, ScoreDto, ScoreDto>, ScoreMapper>();
+            services.AddTransient<IMapper<Answer, AnswerDto, AnswerCreateDto>, AnswerMapper>();
 
             services.AddTransient<IValidator<Question>, QuestionValidator>();
+            services.AddTransient<IValidator<Answer>, AnswerValidator>();
 
             services.AddSwaggerGen(options =>
             {
