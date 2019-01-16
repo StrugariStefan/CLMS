@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Notifications.API.Filters;
-using Notifications.API.Models;
-using Notifications.API.Services;
-
-namespace Notifications.API.Controllers
+﻿namespace Notifications.API.Controllers
 {
+    using CLMS.Common;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using Notifications.API.Models;
+    using Notifications.API.Services;
+
     [AuthFilter]
     [Route("api/v1/notifications")]
     [ApiController]

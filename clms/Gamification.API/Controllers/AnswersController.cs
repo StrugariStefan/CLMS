@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using Gamification.API.Filters;
-using Gamification.API.Helpers;
-using Gamification.API.Models;
-using Gamification.API.Repository.Read;
-using Gamification.API.Repository.Write;
-using Microsoft.AspNetCore.Mvc;
-
-
-namespace Gamification.API.Controllers
+﻿namespace Gamification.API.Controllers
 {
+    using System;
+    using System.Collections.Generic;
 
-    [Produces("application / json")]
+    using CLMS.Common;
+
+    using Gamification.API.Helpers;
+    using Gamification.API.Models;
+    using Gamification.API.Repository.Read;
+    using Gamification.API.Repository.Write;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    [Produces("application/json")]
     [Route("api/v1/answers")]
     [ApiController]
     public class AnswersController : ControllerBase

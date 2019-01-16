@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Courses.API.Filters;
-using Courses.API.Helpers;
-using Courses.API.Models;
-using Courses.API.Repository.Read;
-using Courses.API.Repository.Write;
-using Courses.API.Services;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Courses.API.Controllers
+﻿namespace Courses.API.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+
+    using CLMS.Common;
+
+    using Courses.API.Helpers;
+    using Courses.API.Models;
+    using Courses.API.Repository.Read;
+    using Courses.API.Repository.Write;
+    using Courses.API.Services;
+
+    using Microsoft.AspNetCore.Mvc;
+
     [Produces("application/json")]
     [Route("api/v1/resourceFiles")]
     [ApiController]

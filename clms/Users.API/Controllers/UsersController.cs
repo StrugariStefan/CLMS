@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using Users.API.Filters;
-using Users.API.Helpers;
-using Users.API.Models;
-using Users.API.Repository.Read;
-using Users.API.Repository.Write;
-
-namespace Users.API.Controllers
+﻿namespace Users.API.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+
+    using CLMS.Common;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using Users.API.Helpers;
+    using Users.API.Models;
+    using Users.API.Repository.Read;
+    using Users.API.Repository.Write;
+
     [Route("api/v1/users")]
     [ApiController]
     public class UsersController : ControllerBase
