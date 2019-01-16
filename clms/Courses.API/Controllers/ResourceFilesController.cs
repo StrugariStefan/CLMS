@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Courses.API.Controllers
 {
-    [Produces("application / json")]
+    [Produces("application/json")]
     [Route("api/v1/resourceFiles")]
     [ApiController]
     public class ResourceFilesController : ControllerBase
@@ -96,13 +96,11 @@ namespace Courses.API.Controllers
         /// <response code="201">The created resourceFile</response>
         /// <response code="400">If resourceFileDto is null, model is not valid or course id doesn't exist</response>
         [HttpPost]
-        [AuthFilter]
+        [AuthFilter, RoleFilter]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<ResourceFile>> Post([FromForm] ResourceFileCreateDto resourceFileCreateDto)
         {
-            Console.WriteLine(resourceFileCreateDto);
-
             if (resourceFileCreateDto == null)
             {
                 return BadRequest();
@@ -118,6 +116,12 @@ namespace Courses.API.Controllers
                 return BadRequest("Cannot assigne file to an non-existing course.");
             }
 
+            this.HttpContext.Items.TryGetValue("UserId", out var userId);
+            if (!_readCourseRepository.GetOwnerById(resourceFileCreateDto.CourseId).ToString().Equals(userId))
+            {
+                return BadRequest("You dont have owner privileges for this course.");
+            }
+
             ResourceFile resource = _mapper.DtoToEntity(resourceFileCreateDto);
 
             await _fileStorageService.UploadFile(resource.Id, resourceFileCreateDto.Resource.OpenReadStream(), resourceFileCreateDto.Resource.FileName);
@@ -125,9 +129,7 @@ namespace Courses.API.Controllers
             _writeResourceFileRepository.Create(resource);
             _writeResourceFileRepository.SaveChanges();
 
-
-
-            return CreatedAtRoute("GetByResourceFileId", new {id = resource.Id}, resource);
+            return CreatedAtRoute("GetByResourceFileId", new { id = resource.Id }, resource);
         }
 
         /// <summary>
@@ -135,16 +137,26 @@ namespace Courses.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <response code="204">ResourceFile has been deleted</response>
+        /// <response code="400">If User has no permissions.</response>
+        /// <response code="401">Token Unauthorized.</response>
         /// <response code="404">If resourceFile id is not found</response>
         [HttpDelete("{id}")]
-        [AuthFilter]
+        [AuthFilter, RoleFilter]
         [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<ResourceFile>> Delete(Guid id)
         {
             if (!_writeResourceFileRepository.Exists(id))
             {
                 return NotFound();
+            }
+
+            this.HttpContext.Items.TryGetValue("UserId", out var userId);
+            if (!_readCourseRepository.GetOwnerById(id).ToString().Equals(userId))
+            {
+                return BadRequest("You dont have owner privileges for this course.");
             }
 
             _writeResourceFileRepository.Delete(id);
