@@ -70,7 +70,7 @@ namespace Courses.API.Controllers
         {
             Course course = _readCourseRepository.GetByName(name);
 
-            if ( course == null)
+            if (course == null)
             {
                 return NotFound();
             }
@@ -94,6 +94,9 @@ namespace Courses.API.Controllers
                 return BadRequest();
             }
 
+            this.HttpContext.Items.TryGetValue("UserId", out var userId);
+            courseCreateDto.CreatedBy = Guid.Parse(userId.ToString());
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -109,7 +112,7 @@ namespace Courses.API.Controllers
             _writeCourseRepository.Create(course);
             _writeCourseRepository.SaveChanges();
 
-            return CreatedAtRoute("GetByCourseId", new {id = course.Id}, course);
+            return CreatedAtRoute("GetByCourseId", new { id = course.Id }, course);
         }
 
         /// <summary>
@@ -119,7 +122,7 @@ namespace Courses.API.Controllers
         /// <response code="204">Course has been deleted</response>
         /// <response code="404">If course id is not found</response>
         [HttpDelete("{id}")]
-        [AuthFilter, RoleFilter]
+        [AuthFilter, RoleFilter, OwnerFilter]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public ActionResult<Course> Delete(Guid id)
