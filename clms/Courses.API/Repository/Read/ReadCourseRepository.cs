@@ -25,6 +25,11 @@ namespace Courses.API.Repository.Read
             return _context.Courses.FirstOrDefault(c => c.Name == name);
         }
 
+        public Guid GetOwnerById(Guid id)
+        {
+            return this._context.Courses.FirstOrDefault(c => c.Id == id).CreatedBy;
+        }
+
         public Course GetById(Guid id)
         {
             return _context.Courses.FirstOrDefault(c => c.Id == id);

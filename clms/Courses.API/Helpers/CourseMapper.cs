@@ -4,7 +4,7 @@ using Courses.API.Models;
 
 namespace Courses.API.Helpers
 {
-    public class CourseMapper: IMapper<Course, CourseDto, CourseCreateDto>
+    public class CourseMapper : IMapper<Course, CourseDto, CourseCreateDto>
     {
         private readonly MapperConfiguration _entityToDtoConfig;
         private readonly MapperConfiguration _dtoToEntityConfig;
@@ -14,7 +14,7 @@ namespace Courses.API.Helpers
             _dtoToEntityConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<CourseCreateDto, Course>()
-                    .ConvertUsing(s => new Course(s.Name, s.Description));
+                    .ConvertUsing(s => new Course(s.CreatedBy, s.Name, s.Description));
             });
             _entityToDtoConfig = new MapperConfiguration(entity => { entity.CreateMap<Course, CourseDto>(); });
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Courses.API.Common;
 using Courses.API.Context;
 using Courses.API.Helpers;
 using Courses.API.Models;
@@ -82,9 +83,9 @@ namespace Courses.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwagger()
-                .UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Courses.API"); });
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Courses.API"); });
+            app.UseCoursesMiddleware();
             app.UseMvc();
         }
     }
