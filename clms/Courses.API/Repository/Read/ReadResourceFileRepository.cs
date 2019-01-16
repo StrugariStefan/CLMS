@@ -20,6 +20,11 @@ namespace Courses.API.Repository.Read
             return _context.ResourceFiles.FirstOrDefault(r => r.Id == id);
         }
 
+        public Guid GetCourseById(Guid id)
+        {
+            return _context.ResourceFiles.FirstOrDefault(r => r.Id == id).CourseId;
+        }
+
         public IReadOnlyList<ResourceFile> GetAll()
         {
             return _context.ResourceFiles.ToList();
@@ -28,6 +33,12 @@ namespace Courses.API.Repository.Read
         public bool Exists(Guid id)
         {
             return _context.ResourceFiles.Any(r => r.Id == id);
+        }
+
+        public bool ExistsCourse(Guid id)
+        {
+            var courseId = _context.ResourceFiles.FirstOrDefault(r => r.Id == id).CourseId;
+            return _context.Courses.Any(c => c.Id == courseId);
         }
 
         public void SaveChanges()
