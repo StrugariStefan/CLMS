@@ -6,6 +6,7 @@ using Gamification.API.Models;
 using Gamification.API.Repository.Read;
 using Gamification.API.Repository.Write;
 using System.Reflection;
+using Gamification.API.Validators;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation;
 
 namespace Gamification.API
 {
@@ -33,12 +35,16 @@ namespace Gamification.API
             services.AddTransient<IWriteQuestionRepository, WriteQuestionRepository>();
             services.AddTransient<IReadScoreRepository, ReadScoreRepository>();
             services.AddTransient<IWriteScoreRepository, WriteScoreRepository>();
+            services.AddTransient<IReadAnswerRepository, ReadAnswerRepository>();
+            services.AddTransient<IWriteAnswerRepository, WriteAnswerRepository>();
+
 
             services.AddTransient<IMapper<Question, QuestionDto, QuestionCreateDto>, QuestionMapper>();
             services.AddTransient<IMapper<Score, ScoreDto, ScoreDto>, ScoreMapper>();
+            services.AddTransient<IMapper<Answer, AnswerDto, AnswerCreateDto>, AnswerMapper>();
 
-           // services.AddTransient<IValidator<Question>, QuestionValidator>();
-           
+            services.AddTransient<IValidator<Question>, QuestionValidator>();
+            services.AddTransient<IValidator<Answer>, AnswerValidator>();
 
             services.AddSwaggerGen(options =>
             {
