@@ -1,7 +1,6 @@
 ﻿namespace Courses.API.Filters
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -17,10 +16,7 @@
             ActionExecutingContext filterContext,
             ActionExecutionDelegate next)
         {
-            var headers = filterContext.HttpContext.Request.Headers["AuthToken"];
-            var token = headers.FirstOrDefault();
-            var resultContext = await IsUserRoleValidAsync(token);
-
+            var resultContext = await IsUserRoleValidAsync(filterContext);
             if (!resultContext)
             {
                 filterContext.Result = new BadRequestObjectResult("Unauthorized user!");
@@ -31,33 +27,27 @@
             }
         }
 
-        private static async Task<bool> IsUserRoleValidAsync(string token)
+        private static async Task<bool> IsUserRoleValidAsync(ActionContext filterContext)
         {
-            var authUri = $"http://localhost:5003/api/v1/auth/loggedIn/{token}";
-            var authResponse = new HttpClient().GetAsync(authUri).Result;
-
-            if (authResponse.StatusCode != HttpStatusCode.OK)
-            {
-                return false;
-            }
-
-            var authContent = authResponse.Content.ReadAsStringAsync().Result;
-            var userId = JsonConvert.DeserializeObject<string>(authContent);
+            filterContext.HttpContext.Items.TryGetValue("UserId", out var userId);
+            filterContext.HttpContext.Items.TryGetValue("AuthToken", out var token);
             using (var client = new HttpClient())
             {
                 var userUri = $"http://localhost:5001/api/v1/users/{userId}";
-                client.DefaultRequestHeaders.Add("AuthToken", token);
-                var userResponse = await client.GetStringAsync(userUri);
+                client.DefaultRequestHeaders.Add("AuthToken", token.ToString());
 
-                var userRole = JsonConvert.DeserializeObject<Dictionary<string, string>>(userResponse);
+                var checkResponse = client.GetAsync(userUri).Result;
 
-                if (userRole.TryGetValue("role", out var role) && int.Parse(role) == 2)
+                if (checkResponse.StatusCode != HttpStatusCode.OK)
                 {
                     return true;
                 }
-            }
 
-            return false;
+                var userResponse = await client.GetStringAsync(userUri);
+                var userRole = JsonConvert.DeserializeObject<Dictionary<string, string>>(userResponse);
+
+                return userRole.TryGetValue("role", out var role) && int.Parse(role) == 2;
+            }
         }
     }
 }
