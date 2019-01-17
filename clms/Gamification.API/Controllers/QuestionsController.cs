@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using CLMS.Common;
+    using CLMS.Common.Filters;
 
     using Gamification.API.Helpers;
     using Gamification.API.Models;
@@ -12,9 +12,9 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    using Type = Gamification.API.Models.Type;
+    using Type = Models.Type;
 
-    [Produces("application/json")]
+    [Produces("application / json")]
         [Route("api/v1/questions")]
         [ApiController]
         public class QuestionsController : ControllerBase
@@ -116,7 +116,7 @@
             /// <response code="201">The created question</response>
             /// <response code="400">If questionDto is null, model is not valid or name already exists</response>
             [HttpPost]
-            [AuthFilter]
+            [AuthFilter, OwnerFilter]
             [ProducesResponseType(201)]
             [ProducesResponseType(400)]
             public ActionResult<Question> Post([FromBody] QuestionCreateDto questionCreateDto)
@@ -125,6 +125,9 @@
                 {
                     return BadRequest();
                 }
+
+                this.HttpContext.Items.TryGetValue("UserId", out var userId);
+                questionCreateDto.CreatedBy = Guid.Parse(userId.ToString());
 
                 if (!ModelState.IsValid)
                 {
@@ -146,14 +149,21 @@
             /// <response code="204">Question has been deleted</response>
             /// <response code="404">If question id is not found</response>
             [HttpDelete("{id}")]
-            [AuthFilter]
+            [AuthFilter, OwnerFilter]
             [ProducesResponseType(204)]
             [ProducesResponseType(404)]
             public ActionResult<Question> Delete(Guid id)
             {
-                if (!_writeQuestionRepository.Exists(id))
+                if (!_readQuestionRepository.Exists(id))
                 {
                     return NotFound();
+                }
+
+                this.HttpContext.Items.TryGetValue("UserId", out var userId);
+
+                if (!_readQuestionRepository.GetOwnerById(id).ToString().Equals(userId))
+                {
+                    return BadRequest("You dont have owner privileges for this question.");
                 }
 
                 _writeQuestionRepository.Delete(id);

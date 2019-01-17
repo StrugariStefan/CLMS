@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Gamification.API.Context;
-using Gamification.API.Models;
-namespace Gamification.API.Repository.Read
+﻿namespace Gamification.API.Repository.Read
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Gamification.API.Context;
+    using Gamification.API.Models;
+
     public class ReadQuestionRepository : IReadQuestionRepository
     {
         private readonly ApplicationContext _context;
@@ -18,6 +19,10 @@ namespace Gamification.API.Repository.Read
         public Question GetById(Guid id)
         {
             return _context.Questions.FirstOrDefault(q => q.Id == id);
+        }
+        public Guid GetOwnerById(Guid id)
+        {
+            return _context.Questions.FirstOrDefault(c => c.Id == id).CreatedBy;
         }
 
         public IReadOnlyList<Question> GetAll()
@@ -39,6 +44,7 @@ namespace Gamification.API.Repository.Read
         {
             return _context.Questions.Where(q => q.Type == type).ToList();
         }
+
         public IReadOnlyList<Question> GetByLevelOfInterest(LevelOfInterest levelOfInterest)
         {
             return _context.Questions.Where(q => q.LevelOfInterest == levelOfInterest).ToList();
