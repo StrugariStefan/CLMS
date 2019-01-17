@@ -10,39 +10,35 @@ namespace Auth.Test
     [TestClass]
     public class AuthControllerTest
     {
+        [TestMethod]
         public void Null_LoginRequest_Returns_BadRequest()
         {
             //Arrange
-            var mockAuthRepository = new Mock<IAuthRepository>();
-            var authController = new AuthController(mockAuthRepository.Object);
+            var authRepository = new AuthRepository();
+            var authController = new AuthController(authRepository);
 
             //Act
-            var expected = new BadRequestResult();
             var actual = authController.Login(null);
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsInstanceOfType(actual.Result, typeof(BadRequestResult));
         }
+
 
         [TestMethod]
         public void Valid_LoginRequest_Returns_Ok()
         {
             //Arrange
             var loginRequest = new LoginRequest();
-            const string token = "testToken";
-
             var mockAuthRepository = new Mock<IAuthRepository>();
-            mockAuthRepository.Setup(a => a.Login(loginRequest)
-            ).Returns(token);
-
+            mockAuthRepository.Setup(a => a.Login(loginRequest)).Returns("testToken");
             var authController = new AuthController(mockAuthRepository.Object);
 
             //Act
-            var expected = new OkObjectResult(token);
             var actual = authController.Login(loginRequest);
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsInstanceOfType(actual.Result, typeof(OkObjectResult));
         }
 
         [TestMethod]
@@ -53,19 +49,18 @@ namespace Auth.Test
             string token = null;
 
             var mockAuthRepository = new Mock<IAuthRepository>();
-            mockAuthRepository.Setup(a => a.Login(loginRequest)
-            ).Returns(token);
+            mockAuthRepository.Setup(a => a.Login(loginRequest)).Returns(token);
 
             var authController = new AuthController(mockAuthRepository.Object);
 
             //Act
-            var expected = new NotFoundResult();
             var actual = authController.Login(loginRequest);
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsInstanceOfType(actual.Result, typeof(NotFoundResult));
         }
 
+        [TestMethod]
         public void Null_LogoutRequest_Returns_BadRequest()
         {
             //Arrange
@@ -73,11 +68,10 @@ namespace Auth.Test
             var authController = new AuthController(mockAuthRepository.Object);
 
             //Act
-            var expected = new BadRequestResult();
             var actual = authController.Logout(null);
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsInstanceOfType(actual.Result, typeof(BadRequestResult));
         }
 
         [TestMethod]
@@ -86,16 +80,14 @@ namespace Auth.Test
             //Arrange
             var logoutRequest = new LogoutRequest();
             var mockAuthRepository = new Mock<IAuthRepository>();
-            mockAuthRepository.Setup(a => a.Logout(logoutRequest));
 
             var authController = new AuthController(mockAuthRepository.Object);
 
             //Act
-            var expected = new OkResult();
             var actual = authController.Logout(logoutRequest);
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsInstanceOfType(actual.Result, typeof(OkResult));
         }
     }
 }

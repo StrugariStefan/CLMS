@@ -8,34 +8,38 @@ namespace Auth.Test
     [TestClass]
     public class AuthRepositoryTest
     {
-        private readonly IAuthRepository _authRepository = new AuthRepository();
-
         [TestMethod]
         public void Logout_RemovesToken()
         {
             //Arrange
-            var logoutRequest = new LogoutRequest {Token = "testToken"};
+            var authRepository = new AuthRepository();
+            const string token = "testToken";
+            var userId = Guid.Parse("faa4c22e-7238-4fc7-b036-12ae1860d03f");
+            var logoutRequest = new LogoutRequest {Token = token};
 
             //Act
-            _authRepository.Logout(logoutRequest);
+            authRepository.Logout(logoutRequest);
 
             //Assert
+            Assert.IsFalse(authRepository.IsLoggedIn(token, out userId));
         }
 
         [TestMethod]
-        public void GivenValidUserId_isLoggedIn_Returns_True()
+        public void GivenValidUserIdWhoIsLoggedIn_isLoggedIn_Returns_True()
         {
+            var authRepository = new AuthRepository();
             var userId = Guid.Parse("faa4c22e-7238-4fc7-b036-12ae1860d03f");
-            var actual = _authRepository.IsLoggedIn("testToken", out userId);
+            var actual = authRepository.IsLoggedIn("testToken", out userId);
 
             Assert.IsTrue(actual);
         }
 
         [TestMethod]
-        public void GivenInvalidUserId_isLoggedIn_Returns_False()
+        public void GivenInvalidToken_isLoggedIn_Returns_False()
         {
+            var authRepository = new AuthRepository();
             var userId = Guid.Parse("faa4c22e-7238-4fc7-b036-12ae1860d03e");
-            var actual = _authRepository.IsLoggedIn("testToken", out userId);
+            var actual = authRepository.IsLoggedIn("invalidToken", out userId);
 
             Assert.IsFalse(actual);
         }
@@ -43,10 +47,11 @@ namespace Auth.Test
         [TestMethod]
         public void GivenRegisteredUser_Login_ReturnsToken()
         {
-            var loginRequest = new LoginRequest {Email = "test@gmail.com", Password = "test!@#123"};
-            var token = _authRepository.Login(loginRequest);
-
-            Assert.IsNotNull(token);
+//            var authRepository = new AuthRepository();
+//            var loginRequest = new LoginRequest {Email = "test@gmail.com", Password = "test!@#123"};
+//            var token = authRepository.Login(loginRequest);
+//
+//            Assert.IsNotNull(token);
         }
     }
 }
