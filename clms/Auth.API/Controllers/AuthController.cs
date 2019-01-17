@@ -23,10 +23,6 @@ namespace Auth.API.Controllers
         {
             if (_authRepository.IsLoggedIn(token, out var userId))
             {
-                if (token == "testToken")
-                {
-                    return Ok();
-                }
                 return Ok(userId);
             }
 

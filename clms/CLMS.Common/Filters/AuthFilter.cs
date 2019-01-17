@@ -1,4 +1,4 @@
-﻿namespace Courses.API.Filters
+﻿namespace CLMS.Common
 {
     using System.Linq;
     using System.Net;
@@ -25,7 +25,6 @@
             requestItems.Add(propertyName, propertyValue);
         }
 
-        // OnActionExecuting – This method is called before a controller action is executed.
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             StringValues headers = filterContext.HttpContext.Request.Headers["AuthToken"];

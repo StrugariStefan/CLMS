@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Courses.API", "Courses.API\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamification.API", "Gamification.API\Gamification.API.csproj", "{1988D0C0-B7FE-4072-9D17-50869F7A1869}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.Test", "Notifications.Test\Notifications.Test.csproj", "{67EA32E0-A074-407A-B306-9AEA6A98E56E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notifications.Test", "Notifications.Test\Notifications.Test.csproj", "{67EA32E0-A074-407A-B306-9AEA6A98E56E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Test", "Auth.Test\Auth.Test.csproj", "{DE64489F-357F-49AE-8241-864516AAD5A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Test", "Auth.Test\Auth.Test.csproj", "{DE64489F-357F-49AE-8241-864516AAD5A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLMS.Common", "CLMS.Common\CLMS.Common.csproj", "{342988A0-438D-40F9-8B46-54718C2D5D8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,18 @@ Global
 		{DE64489F-357F-49AE-8241-864516AAD5A1}.Release|x64.Build.0 = Release|Any CPU
 		{DE64489F-357F-49AE-8241-864516AAD5A1}.Release|x86.ActiveCfg = Release|Any CPU
 		{DE64489F-357F-49AE-8241-864516AAD5A1}.Release|x86.Build.0 = Release|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Debug|x64.Build.0 = Debug|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Debug|x86.Build.0 = Debug|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Release|x64.ActiveCfg = Release|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Release|x64.Build.0 = Release|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Release|x86.ActiveCfg = Release|Any CPU
+		{342988A0-438D-40F9-8B46-54718C2D5D8C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

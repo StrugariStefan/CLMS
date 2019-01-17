@@ -1,4 +1,4 @@
-﻿namespace Courses.API.Filters
+﻿namespace CLMS.Common
 {
     using System.Collections.Generic;
     using System.Net;
