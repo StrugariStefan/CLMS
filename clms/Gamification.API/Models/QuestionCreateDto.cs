@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Gamification.API.Models
+﻿namespace Gamification.API.Models
 {
+    using System;
+    using System.Runtime.Serialization;
+
     public class QuestionCreateDto
     {
         public Guid CourseId { get; set; }
+        [IgnoreDataMember]
         public Guid CreatedBy { get; set; }
         public string ActualQuestion { get; set; }
         public LevelOfInterest LevelOfInterest { get; set; }

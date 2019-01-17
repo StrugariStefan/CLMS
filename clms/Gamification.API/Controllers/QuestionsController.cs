@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using Gamification.API.Filters;
-using Gamification.API.Helpers;
-using Gamification.API.Models;
-using Gamification.API.Repository.Read;
-using Gamification.API.Repository.Write;
-using Microsoft.AspNetCore.Mvc;
-using Type = Gamification.API.Models.Type;
-
-namespace Gamification.API.Controllers
+﻿namespace Gamification.API.Controllers
 {
+    using System;
+    using System.Collections.Generic;
 
-        [Produces("application / json")]
+    using CLMS.Common;
+
+    using Gamification.API.Helpers;
+    using Gamification.API.Models;
+    using Gamification.API.Repository.Read;
+    using Gamification.API.Repository.Write;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using Type = Gamification.API.Models.Type;
+
+    [Produces("application/json")]
         [Route("api/v1/questions")]
         [ApiController]
         public class QuestionsController : ControllerBase
@@ -70,7 +73,7 @@ namespace Gamification.API.Controllers
             [ProducesResponseType(404)]
             public ActionResult<IReadOnlyList<QuestionDto>> GetByType(Type type)
             {
-                
+
                 IReadOnlyList<Question> questions = _readQuestionRepository.GetByType(type);
 
                 if (questions == null)
@@ -79,7 +82,7 @@ namespace Gamification.API.Controllers
                 }
 
                 return Ok(_mapper.EntityCollectionToDtoCollection(questions));
-              
+
             }
 
             /// <summary>
@@ -89,22 +92,23 @@ namespace Gamification.API.Controllers
             /// <response code="200">Specified questions</response>
             /// <response code="404">If questions with the specified level of interest don't exist</response>
             [HttpGet("levelOfInterest/{levelOfInterest}", Name = "GetByQuestionLevelOfInterest")]
-            [AuthFilter]
-            [ProducesResponseType(200)]
-            [ProducesResponseType(404)]
-            public ActionResult<IReadOnlyList<QuestionDto>> GetByLevelOfInterest(LevelOfInterest levelOfInterest)
-            {
-
-                IReadOnlyList<Question> questions = _readQuestionRepository.GetByLevelOfInterest(levelOfInterest);
-
-                if (questions == null)
+                [AuthFilter]
+                [ProducesResponseType(200)]
+                [ProducesResponseType(404)]
+                public ActionResult<IReadOnlyList<QuestionDto>> GetByLevelOfInterest(LevelOfInterest levelOfInterest)
                 {
-                    return NotFound();
+
+                    IReadOnlyList<Question> questions = _readQuestionRepository.GetByLevelOfInterest(levelOfInterest);
+
+                    if (questions == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(_mapper.EntityCollectionToDtoCollection(questions));
+
                 }
 
-                return Ok(_mapper.EntityCollectionToDtoCollection(questions));
-
-            }
 
             /// <summary>
             /// Creates a new question.

@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using Courses.API.Filters;
-using Courses.API.Helpers;
-using Courses.API.Models;
-using Courses.API.Repository.Read;
-using Courses.API.Repository.Write;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Courses.API.Controllers
+﻿namespace Courses.API.Controllers
 {
-    [Produces("application / json")]
+    using System;
+    using System.Collections.Generic;
+
+    using CLMS.Common;
+
+    using Courses.API.Helpers;
+    using Courses.API.Models;
+    using Courses.API.Repository.Read;
+    using Courses.API.Repository.Write;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    [Produces("application/json")]
     [Route("api/v1/courses")]
     [ApiController]
     public class CoursesController : ControllerBase
@@ -70,7 +73,7 @@ namespace Courses.API.Controllers
         {
             Course course = _readCourseRepository.GetByName(name);
 
-            if ( course == null)
+            if (course == null)
             {
                 return NotFound();
             }
@@ -84,7 +87,7 @@ namespace Courses.API.Controllers
         /// <response code="201">The created course</response>
         /// <response code="400">If courseDto is null, model is not valid or name already exists</response>
         [HttpPost]
-        [AuthFilter]
+        [AuthFilter, RoleFilter]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public ActionResult<Course> Post([FromBody] CourseCreateDto courseCreateDto)
@@ -93,6 +96,9 @@ namespace Courses.API.Controllers
             {
                 return BadRequest();
             }
+
+            this.HttpContext.Items.TryGetValue("UserId", out var userId);
+            courseCreateDto.CreatedBy = Guid.Parse(userId.ToString());
 
             if (!ModelState.IsValid)
             {
@@ -109,7 +115,7 @@ namespace Courses.API.Controllers
             _writeCourseRepository.Create(course);
             _writeCourseRepository.SaveChanges();
 
-            return CreatedAtRoute("GetByCourseId", new {id = course.Id}, course);
+            return CreatedAtRoute("GetByCourseId", new { id = course.Id }, course);
         }
 
         /// <summary>
@@ -117,16 +123,27 @@ namespace Courses.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <response code="204">Course has been deleted</response>
+        /// <response code="400">If User has no permissions.</response>
+        /// <response code="401">Token Unauthorized.</response>
         /// <response code="404">If course id is not found</response>
         [HttpDelete("{id}")]
-        [AuthFilter]
+        [AuthFilter, RoleFilter]
         [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(404)]
         public ActionResult<Course> Delete(Guid id)
         {
-            if (!_writeCourseRepository.Exists(id))
+            if (!_readCourseRepository.Exists(id))
             {
                 return NotFound();
+            }
+
+            this.HttpContext.Items.TryGetValue("UserId", out var userId);
+
+            if (!_readCourseRepository.GetOwnerById(id).ToString().Equals(userId))
+            {
+                return BadRequest("You dont have owner privileges for this course.");
             }
 
             _writeCourseRepository.Delete(id);

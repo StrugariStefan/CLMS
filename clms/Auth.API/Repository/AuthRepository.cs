@@ -10,11 +10,10 @@ namespace Auth.API.Repository
     public class AuthRepository : IAuthRepository
     {
         private static readonly Dictionary<string, Guid> Tokens = new Dictionary<string, Guid>() { {"testToken", Guid.Parse("faa4c22e-7238-4fc7-b036-12ae1860d03f")} };
-
+        
         public bool IsLoggedIn(string token, out Guid userId)
         {
-            Tokens.TryGetValue(token, out userId);
-            return userId != null;
+            return Tokens.TryGetValue(token, out userId);
         }
 
         public string Login(LoginRequest loginRequest)
