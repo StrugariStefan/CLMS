@@ -1,4 +1,4 @@
-﻿namespace CLMS.Common
+﻿namespace CLMS.Common.Filters
 {
     using System.Collections.Generic;
     using System.Net;
@@ -16,7 +16,9 @@
             ActionExecutingContext filterContext,
             ActionExecutionDelegate next)
         {
-            var resultContext = await IsUserRoleValidAsync(filterContext);
+            var filterProperty = new ActionFilterProperty(filterContext, false);
+            var resultContext = await IsUserRoleValidAsync(filterProperty);
+
             if (!resultContext)
             {
                 filterContext.Result = new BadRequestObjectResult("Unauthorized user!");
@@ -27,20 +29,20 @@
             }
         }
 
-        private static async Task<bool> IsUserRoleValidAsync(ActionContext filterContext)
+        private static async Task<bool> IsUserRoleValidAsync(ActionFilterProperty filterProperty)
         {
-            filterContext.HttpContext.Items.TryGetValue("UserId", out var userId);
-            filterContext.HttpContext.Items.TryGetValue("AuthToken", out var token);
+            filterProperty.Get("UserId", out var userId);
+            filterProperty.Get("AuthToken", out var token);
+
             using (var client = new HttpClient())
             {
                 var userUri = $"http://localhost:5001/api/v1/users/{userId}";
                 client.DefaultRequestHeaders.Add("AuthToken", token.ToString());
 
                 var checkResponse = client.GetAsync(userUri).Result;
-
                 if (checkResponse.StatusCode != HttpStatusCode.OK)
                 {
-                    return true;
+                    return false;
                 }
 
                 var userResponse = await client.GetStringAsync(userUri);

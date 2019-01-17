@@ -1,6 +1,6 @@
 ﻿namespace Notifications.API.Controllers
 {
-    using CLMS.Common;
+    using CLMS.Common.Filters;
 
     using Microsoft.AspNetCore.Mvc;
 

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using CLMS.Common;
+    using CLMS.Common.Filters;
 
     using Courses.API.Helpers;
     using Courses.API.Models;

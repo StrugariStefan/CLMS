@@ -5,7 +5,7 @@
     using System.IO;
     using System.Threading.Tasks;
 
-    using CLMS.Common;
+    using CLMS.Common.Filters;
 
     using Courses.API.Helpers;
     using Courses.API.Models;
