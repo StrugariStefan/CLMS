@@ -9,8 +9,6 @@
     using Gamification.API.Models;
     using Gamification.API.Repository.Read;
     using Gamification.API.Repository.Write;
-
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [Produces("application/json")]
