@@ -3,14 +3,12 @@
     using System;
     using System.Collections.Generic;
 
-    using CLMS.Common;
+    using CLMS.Common.Filters;
 
     using Gamification.API.Helpers;
     using Gamification.API.Models;
     using Gamification.API.Repository.Read;
     using Gamification.API.Repository.Write;
-
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [Produces("application/json")]

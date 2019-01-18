@@ -1,4 +1,4 @@
-﻿namespace CLMS.Common
+﻿namespace CLMS.Common.Filters
 {
     using System.Linq;
     using System.Net;
@@ -6,60 +6,45 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.Extensions.Primitives;
 
     using Newtonsoft.Json;
 
     // https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions-1/controllers-and-routing/understanding-action-filters-cs
     public class AuthFilter : ActionFilterAttribute
     {
-        public static void AddProperty(ActionExecutingContext filterContext, string propertyName, object propertyValue)
-        {
-            var requestItems = filterContext.HttpContext.Items;
-            if (requestItems.ContainsKey(propertyName))
-            {
-                requestItems[propertyName] = propertyValue;
-                return;
-            }
-
-            requestItems.Add(propertyName, propertyValue);
-        }
-
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            StringValues headers = filterContext.HttpContext.Request.Headers["AuthToken"];
+            var filterProperty = new ActionFilterProperty(filterContext, true);
+            var headers = filterContext.HttpContext.Request.Headers["AuthToken"];
             var token = headers.FirstOrDefault();
 
-            if (token == null)
+            if (token != null)
             {
-                filterContext.Result = new UnauthorizedResult();
+                filterProperty.Set("AuthToken", token);
+                if (IsAuthTokenValid(filterProperty))
+                {
+                    return;
+                }
             }
 
-            bool isAuth = IsAuthTokenValid(token, out var userId);
-
-            AddProperty(filterContext, "AuthToken", token);
-            AddProperty(filterContext, "UserId", userId);
-
-            if (!isAuth)
-            {
-                filterContext.Result = new UnauthorizedResult();
-            }
+            filterContext.Result = new UnauthorizedResult();
         }
 
-        private static bool IsAuthTokenValid(string token, out string userId)
+        private static bool IsAuthTokenValid(ActionFilterProperty filterProperty)
         {
+            filterProperty.Get("AuthToken", out var token);
             var uri = $"http://localhost:5003/api/v1/auth/loggedIn/{token}";
             var authResponse = new HttpClient().GetAsync(uri).Result;
 
-            if (authResponse.StatusCode == HttpStatusCode.OK)
+            if (authResponse.StatusCode != HttpStatusCode.OK)
             {
-                var authContent = authResponse.Content.ReadAsStringAsync().Result;
-                userId = JsonConvert.DeserializeObject<string>(authContent);
-                return true;
+                return false;
             }
 
-            userId = string.Empty;
-            return false;
+            var authContent = authResponse.Content.ReadAsStringAsync().Result;
+            var userId = JsonConvert.DeserializeObject<string>(authContent);
+            filterProperty.Set("UserId", userId);
+            return true;
         }
     }
 }
